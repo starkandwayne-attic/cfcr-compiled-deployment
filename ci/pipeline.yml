@@ -40,14 +40,12 @@ jobs:
         params: {include_source_tarball: true, globs: [x]}
       - get: kubo-compiled-release
         passed: [kubo-compile-release-3541]
-        trigger: true
       - get: bosh-dns-compiled-release
         passed: [bosh-dns-compile-release-3541]
       - get: bpm-compiled-release
         passed: [bpm-compile-release-3541]
       - get: docker-compiled-release
         passed: [docker-compile-release-3541]
-        trigger: true
       - get: kubo-etcd-compiled-release
         passed: [kubo-etcd-compile-release-3541]
       - get: ubuntu-trusty-stemcell-3541
