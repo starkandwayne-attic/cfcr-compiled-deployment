@@ -4,7 +4,27 @@ set -eu
 
 git clone ${REPO_ROOT:?required} ${REPO_OUT:?required}
 
-spruce merge --prune releases kubo-deployment/manifests/cfcr.yml > ${REPO_OUT}/cfcr.yml
+STEMCELL_OS=${STEMCELL_OS:-ubuntu-trusty}
+STEMCELL_VERSION=$(cat stemcell/version)
+
+rm ${REPO_OUT}/use-compiled-releases.yml
+
+releases=$(ls *-compiled-release)
+for release in "${releases[@]}"; do
+  cat >> ${REPO_OUT}/use-compiled-releases.yml <<-YAML
+
+- path: /releases/name=${release}/stemcell?
+  type: replace
+  value:
+    os: "${STEMCELL_OS}"
+    version: "${STEMCELL_VERSION}"
+
+YAML
+done
+
+spruce merge --go-patch \
+  kubo-deployment/manifests/cfcr.yml \
+  ${REPO_OUT}/use-compiled-releases.yml > ${REPO_OUT}/cfcr.yml
 
 if [[ -z $(git config --global user.email) ]]; then
   git config --global user.email "${GIT_EMAIL}"

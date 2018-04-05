@@ -56,6 +56,10 @@ jobs:
         inputs:
           - name: git
           - name: kubo-deployment
+          - name: ubuntu-trusty-stemcell-3541
+            path: stemcell
+          - name: bpm-compiled-release
+          - name: etcd-compiled-release
         outputs:
           - name: pushme
         run:
