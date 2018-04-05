@@ -78,61 +78,76 @@ jobs:
   public: true
   serial_groups: [testflight]
   plan:
-    - aggregate:
-      - get: git
-      - get: cfcr-manifests
-        params: {include_source_tarball: true, globs: [x]}
-      - get: kubo-compiled-release
-        passed: [kubo-compile-release-3541]
-      # - get: bosh-dns-compiled-release
-      #   passed: [bosh-dns-compile-release-3541]
-      - get: bpm-compiled-release
-        passed: [bpm-compile-release-3541]
-      - get: docker-compiled-release
-        passed: [docker-compile-release-3541]
-      - get: kubo-etcd-compiled-release
-        passed: [kubo-etcd-compile-release-3541]
-      - get: ubuntu-trusty-stemcell-3541
-        passed: [kubo-compile-release-3541]
-        params: {tarball: false}
-    - task: update-manifest
-      config:
-        platform: linux
-        image_resource:
-          type: docker-image
-          source:
-            repository: (( grab meta.image.name ))
-            tag:        (( grab meta.image.tag ))
-        inputs:
-          - name: git
-          - name: cfcr-manifests
-          - name: ubuntu-trusty-stemcell-3541
-            path: stemcell
-          # - name: bosh-dns-compiled-release
-          - name: bpm-compiled-release
-          - name: docker-compiled-release
-          - name: kubo-etcd-compiled-release
-          - name: kubo-compiled-release
-        outputs:
-          - name: pushme
-        run:
-          path: git/ci/scripts/update-manifest
+    - do:
+      - aggregate:
+        - get: git
+        - get: cfcr-manifests
+          params: {include_source_tarball: true, globs: [x]}
+        - get: kubo-compiled-release
+          passed: [kubo-compile-release-3541]
+        # - get: bosh-dns-compiled-release
+        #   passed: [bosh-dns-compile-release-3541]
+        - get: bpm-compiled-release
+          passed: [bpm-compile-release-3541]
+        - get: docker-compiled-release
+          passed: [docker-compile-release-3541]
+        - get: kubo-etcd-compiled-release
+          passed: [kubo-etcd-compile-release-3541]
+        - get: ubuntu-trusty-stemcell-3541
+          passed: [kubo-compile-release-3541]
+          params: {tarball: false}
+      - task: update-manifest
+        config:
+          platform: linux
+          image_resource:
+            type: docker-image
+            source:
+              repository: (( grab meta.image.name ))
+              tag:        (( grab meta.image.tag ))
+          inputs:
+            - name: git
+            - name: cfcr-manifests
+            - name: ubuntu-trusty-stemcell-3541
+              path: stemcell
+            # - name: bosh-dns-compiled-release
+            - name: bpm-compiled-release
+            - name: docker-compiled-release
+            - name: kubo-etcd-compiled-release
+            - name: kubo-compiled-release
+          outputs:
+            - name: pushme
+          run:
+            path: git/ci/scripts/update-manifest
+          params:
+            REPO_ROOT: git
+            REPO_OUT:  pushme
+            REPO_OUT_BRANCH: master
+            GIT_EMAIL: (( grab meta.git.email ))
+            GIT_NAME:  (( grab meta.git.name ))
+      - name: bosh-deploy-testflight
+        put: bosh-deploy-testflight
         params:
-          REPO_ROOT: git
-          REPO_OUT:  pushme
-          REPO_OUT_BRANCH: master
-          GIT_EMAIL: (( grab meta.git.email ))
-          GIT_NAME:  (( grab meta.git.name ))
-    - name: bosh-deploy-testflight
-      put: bosh-deploy-testflight
-      params:
-        manifest: pushme/cfcr.yml
-        ops_files: []
-    - name: upload-git
-      put: git
-      params:
-        rebase: true
-        repository: pushme
+          manifest: git/cfcr.yml
+          ops_files:
+          - git/operators/testflight.yml
+          vars:
+            name: cfcr-testflight
+      - name: upload-git
+        put: git
+        params:
+          rebase: true
+          repository: pushme
+      ensure:
+        put: bosh-deploy-testflight
+        params:
+          delete:
+            enable: true
+            force:  true
+          manifest: git/cfcr.yml
+          ops_files:
+          - git/operators/testflight.yml
+          vars:
+            name: cfcr-testflight
 
 - name: bpm-compile-release-3541
   public: true
