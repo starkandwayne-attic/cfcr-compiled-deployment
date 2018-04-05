@@ -49,6 +49,8 @@ jobs:
     - get: bosh-dns-compiled-release
       passed: [bosh-dns-compile-release-3541]
 - name: testflight
+  public: true
+  serial_groups: [testflight]
   plan:
     - get: git
     - name: bosh-deploy-testflight
@@ -60,6 +62,8 @@ jobs:
         vars:
           name: cfcr-testflight
 - name: manifest
+  public: true
+  serial_groups: [testflight]
   plan:
     - aggregate:
       - get: git
@@ -118,6 +122,7 @@ jobs:
         repository: pushme
 
 - name: bpm-compile-release-3541
+  public: true
   serial: true
   plan:
     - aggregate:
@@ -155,6 +160,7 @@ jobs:
         file: "compiled-release/bpm/*.tgz"
 
 - name: bosh-dns-compile-release-3541
+  public: true
   serial: true
   plan:
     - aggregate:
@@ -192,6 +198,7 @@ jobs:
         file: "compiled-release/bosh-dns/*.tgz"
 
 - name: docker-compile-release-3541
+  public: true
   serial: true
   plan:
     - aggregate:
@@ -229,6 +236,7 @@ jobs:
         file: "compiled-release/docker/*.tgz"
 
 - name: etcd-compile-release-3541
+  public: true
   serial: true
   plan:
     - aggregate:
@@ -266,6 +274,7 @@ jobs:
         file: "compiled-release/cfcr-etcd/*.tgz"
 
 - name: kubo-etcd-compile-release-3541
+  public: true
   serial: true
   plan:
     - aggregate:
@@ -303,6 +312,7 @@ jobs:
         file: "compiled-release/kubo-etcd/*.tgz"
 
 - name: kubo-compile-release-3541
+  public: true
   serial: true
   plan:
     - aggregate:
@@ -338,7 +348,6 @@ jobs:
     - put: kubo-compiled-release
       params:
         file: "compiled-release/kubo/*.tgz"
-
 
 resources:
 - name: git
