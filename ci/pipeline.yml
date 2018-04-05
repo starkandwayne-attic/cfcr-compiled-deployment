@@ -30,6 +30,7 @@ meta:
 groups:
 - name: main
   jobs:
+  - testflight
   - manifest
   - docker-compile-release-3541
   - etcd-compile-release-3541
@@ -47,6 +48,17 @@ jobs:
       passed: [etcd-compile-release-3541]
     - get: bosh-dns-compiled-release
       passed: [bosh-dns-compile-release-3541]
+- name: testflight
+  plan:
+    - get: git
+    - name: bosh-deploy-testflight
+      put: bosh-deploy-testflight
+      params:
+        manifest: git/cfcr.yml
+        ops_files:
+        - git/operators/testflight.yml
+        vars:
+          name: cfcr-testflight
 - name: manifest
   plan:
     - aggregate:
@@ -94,12 +106,16 @@ jobs:
           REPO_OUT_BRANCH: master
           GIT_EMAIL: (( grab meta.git.email ))
           GIT_NAME:  (( grab meta.git.name ))
+    - name: bosh-deploy-testflight
+      put: bosh-deploy-testflight
+      params:
+        manifest: pushme/cfcr.yml
+        ops_files: []
     - name: upload-git
       put: git
       params:
         rebase: true
         repository: pushme
-
 
 - name: bpm-compile-release-3541
   serial: true
@@ -429,3 +445,18 @@ resources:
     access_key_id:     (( grab meta.aws.access_key ))
     secret_access_key: (( grab meta.aws.secret_key ))
     regexp:            "kubo/.*-(\\d+).tgz"
+
+- name: bosh-deploy-testflight
+  type: bosh2-deployment
+  source:
+    deployment: cfcr-testflight
+    target:        (( grab meta.bosh.target ))
+    ca_cert:       (( grab meta.bosh.cacert ))
+    client:        (( grab meta.bosh.username ))
+    client_secret: (( grab meta.bosh.password ))
+
+resource_types:
+- name: bosh2-deployment
+  type: docker-image
+  source:
+    repository: cloudfoundry/bosh-deployment-resource
