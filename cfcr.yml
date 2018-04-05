@@ -173,7 +173,12 @@ instance_groups:
 name: cfcr
 releases:
 - name: kubo
-  version: latest
+  sha1: 9c234d098b4225a28dfe2153a138eb870e3b563c
+  stemcell:
+    os: ubuntu-trusty
+    version: "3541.10"
+  url: https://s3.amazonaws.com/cfcr-compiled-deployment/kubo/kubo-0.15.0-ubuntu-trusty-3541.10-20180405-074849-648470018-20180405074908.tgz
+  version: 0.15.0
 - name: cfcr-etcd
   sha1: f6002961808b4421b46501f25d610d8d28caec4f
   stemcell:
@@ -182,13 +187,19 @@ releases:
   url: https://s3.amazonaws.com/cfcr-compiled-deployment/cfcr-etcd/cfcr-etcd-1.0-ubuntu-trusty-3541.10-20180405-074417-314447082-20180405074424.tgz
   version: "1.0"
 - name: docker
-  sha1: 550ab08cb6dcd113ab5182d84fbcb09d966a612a
-  url: https://github.com/cloudfoundry-incubator/docker-boshrelease/releases/download/v31.0.1/docker-31.0.1.tgz
+  sha1: e23de51f3fb5958192bf6366772bea61364fb22c
+  stemcell:
+    os: ubuntu-trusty
+    version: "3541.10"
+  url: https://s3.amazonaws.com/cfcr-compiled-deployment/docker/docker-31.0.1-ubuntu-trusty-3541.10-20180405-074008-064358318-20180405074014.tgz
   version: 31.0.1
 - name: bosh-dns
-  sha1: 9231b7c7d2f6aa85e0cb77fdeef7add54fdb3f1a
-  url: https://bosh.io/d/github.com/cloudfoundry/bosh-dns-release?v=0.2.0
-  version: 0.2.0
+  sha1: d350fdffbe2c42a46a2fd3579961dbc926208e91
+  stemcell:
+    os: ubuntu-trusty
+    version: "3541.10"
+  url: https://s3.amazonaws.com/cfcr-compiled-deployment/bosh-dns/bosh-dns-1.4.0-ubuntu-trusty-3541.10-20180405-075232-983964588-20180405075238.tgz
+  version: 1.4.0
 - name: bpm
   sha1: 99b62d4d5e70f008b7c7b72f76445424d07db425
   stemcell:

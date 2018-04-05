@@ -1,30 +1,55 @@
-- path: /releases/name=bpm/url
-  type: replace
-  value: "https://s3.amazonaws.com/cfcr-compiled-deployment/bpm/bpm-0.5.0-ubuntu-trusty-3541.10-20180405-074159-128200833-20180405074206.tgz"
-- path: /releases/name=bpm/version
-  type: replace
-  value: "0.5.0"
-- path: /releases/name=bpm/sha1
-  type: replace
-  value: "99b62d4d5e70f008b7c7b72f76445424d07db425"
-- path: /releases/name=bpm/stemcell?
+- path: /releases/name=bosh-dns
   type: replace
   value:
-    os: "ubuntu-trusty"
-    version: "3541.10"
+    name:    "bosh-dns"
+    url:     "https://s3.amazonaws.com/cfcr-compiled-deployment/bosh-dns/bosh-dns-1.4.0-ubuntu-trusty-3541.10-20180405-075232-983964588-20180405075238.tgz"
+    version: "1.4.0"
+    sha1:    "d350fdffbe2c42a46a2fd3579961dbc926208e91"
+    stemcell:
+      os: "ubuntu-trusty"
+      version: "3541.10"
 
-- path: /releases/name=cfcr-etcd/url
-  type: replace
-  value: "https://s3.amazonaws.com/cfcr-compiled-deployment/cfcr-etcd/cfcr-etcd-1.0-ubuntu-trusty-3541.10-20180405-074417-314447082-20180405074424.tgz"
-- path: /releases/name=cfcr-etcd/version
-  type: replace
-  value: "1.0"
-- path: /releases/name=cfcr-etcd/sha1
-  type: replace
-  value: "f6002961808b4421b46501f25d610d8d28caec4f"
-- path: /releases/name=cfcr-etcd/stemcell?
+- path: /releases/name=bpm
   type: replace
   value:
-    os: "ubuntu-trusty"
-    version: "3541.10"
+    name:    "bpm"
+    url:     "https://s3.amazonaws.com/cfcr-compiled-deployment/bpm/bpm-0.5.0-ubuntu-trusty-3541.10-20180405-074159-128200833-20180405074206.tgz"
+    version: "0.5.0"
+    sha1:    "99b62d4d5e70f008b7c7b72f76445424d07db425"
+    stemcell:
+      os: "ubuntu-trusty"
+      version: "3541.10"
+
+- path: /releases/name=docker
+  type: replace
+  value:
+    name:    "docker"
+    url:     "https://s3.amazonaws.com/cfcr-compiled-deployment/docker/docker-31.0.1-ubuntu-trusty-3541.10-20180405-074008-064358318-20180405074014.tgz"
+    version: "31.0.1"
+    sha1:    "e23de51f3fb5958192bf6366772bea61364fb22c"
+    stemcell:
+      os: "ubuntu-trusty"
+      version: "3541.10"
+
+- path: /releases/name=cfcr-etcd
+  type: replace
+  value:
+    name:    "cfcr-etcd"
+    url:     "https://s3.amazonaws.com/cfcr-compiled-deployment/cfcr-etcd/cfcr-etcd-1.0-ubuntu-trusty-3541.10-20180405-074417-314447082-20180405074424.tgz"
+    version: "1.0"
+    sha1:    "f6002961808b4421b46501f25d610d8d28caec4f"
+    stemcell:
+      os: "ubuntu-trusty"
+      version: "3541.10"
+
+- path: /releases/name=kubo
+  type: replace
+  value:
+    name:    "kubo"
+    url:     "https://s3.amazonaws.com/cfcr-compiled-deployment/kubo/kubo-0.15.0-ubuntu-trusty-3541.10-20180405-074849-648470018-20180405074908.tgz"
+    version: "0.15.0"
+    sha1:    "9c234d098b4225a28dfe2153a138eb870e3b563c"
+    stemcell:
+      os: "ubuntu-trusty"
+      version: "3541.10"
 
