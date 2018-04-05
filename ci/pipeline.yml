@@ -32,7 +32,8 @@ jobs:
   plan:
     - aggregate:
       - get: git
-      - get: kubo-deployment
+      - get: cfcr-manifests
+        params: {include_source_tarball: true, globs: [x]}
       - get: kubo-compiled-release
         passed: [kubo-compile-release-3541]
         trigger: true
@@ -58,7 +59,7 @@ jobs:
             tag:        (( grab meta.image.tag ))
         inputs:
           - name: git
-          - name: kubo-deployment
+          - name: cfcr-manifests
           - name: ubuntu-trusty-stemcell-3541
             path: stemcell
           - name: bosh-dns-compiled-release
@@ -277,10 +278,13 @@ resources:
     branch:      master
     private_key: (( grab meta.github.private_key ))
 
-- name: kubo-deployment
-  type: git
+- name: cfcr-manifests
+  type: github-release
   source:
-    uri: https://github.com/cloudfoundry-incubator/kubo-deployment
+    owner: cloudfoundry-incubator
+    repository: kubo-deployment
+    access_token: (( grab meta.github.access_token ))
+
 - name: kubo-release
   type: bosh-io-release
   source:

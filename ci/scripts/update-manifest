@@ -4,6 +4,11 @@ set -eu
 
 git clone ${REPO_ROOT:?required} ${REPO_OUT:?required}
 
+pushd cfcr-manifests
+tar xfz source.tar.gz
+popd
+raw_cfcr_manifests=$(ls -d cfcr-manifests/cloudfoundry-incubator-kubo-deployment*/manifests)
+
 STEMCELL_OS=${STEMCELL_OS:-ubuntu-trusty}
 STEMCELL_VERSION=$(cat stemcell/version)
 
@@ -34,7 +39,7 @@ YAML
 done
 
 spruce merge --go-patch \
-  kubo-deployment/manifests/cfcr.yml \
+  $raw_cfcr_manifests/cfcr.yml \
   ${REPO_OUT}/use-compiled-releases.yml > ${REPO_OUT}/cfcr.yml
 
 if [[ -z $(git config --global user.email) ]]; then
