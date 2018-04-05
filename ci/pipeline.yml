@@ -61,8 +61,11 @@ jobs:
           - name: kubo-deployment
           - name: ubuntu-trusty-stemcell-3541
             path: stemcell
+          - name: bosh-dns-compiled-release
           - name: bpm-compiled-release
+          - name: docker-compiled-release
           - name: etcd-compiled-release
+          - name: kubo-compiled-release
         outputs:
           - name: pushme
         run:
