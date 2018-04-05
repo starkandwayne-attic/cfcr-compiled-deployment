@@ -31,17 +31,6 @@
       os: "ubuntu-trusty"
       version: "3541.10"
 
-- path: /releases/name=cfcr-etcd
-  type: replace
-  value:
-    name:    "cfcr-etcd"
-    url:     "https://s3.amazonaws.com/cfcr-compiled-deployment/cfcr-etcd/cfcr-etcd-1.0-ubuntu-trusty-3541.10-20180405-074417-314447082-20180405074424.tgz"
-    version: "1.0"
-    sha1:    "f6002961808b4421b46501f25d610d8d28caec4f"
-    stemcell:
-      os: "ubuntu-trusty"
-      version: "3541.10"
-
 - path: /releases/name=kubo
   type: replace
   value:
@@ -49,6 +38,17 @@
     url:     "https://s3.amazonaws.com/cfcr-compiled-deployment/kubo/kubo-0.15.0-ubuntu-trusty-3541.10-20180405-074849-648470018-20180405074908.tgz"
     version: "0.15.0"
     sha1:    "9c234d098b4225a28dfe2153a138eb870e3b563c"
+    stemcell:
+      os: "ubuntu-trusty"
+      version: "3541.10"
+
+- path: /releases/name=kubo-etcd
+  type: replace
+  value:
+    name:    "kubo-etcd"
+    url:     "https://s3.amazonaws.com/cfcr-compiled-deployment/kubo-etcd/kubo-etcd-9-ubuntu-trusty-3541.10-20180405-093310-5352289-20180405093318.tgz"
+    version: "9"
+    sha1:    "caa0373b77e9713d2ac707cbe3427b341a3125e1"
     stemcell:
       os: "ubuntu-trusty"
       version: "3541.10"

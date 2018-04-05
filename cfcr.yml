@@ -24,31 +24,9 @@ features:
 instance_groups:
 - azs:
   - z1
-  instances: 1
-  jobs:
-  - name: apply-specs
-    properties:
-      admin-password: ((kubo-admin-password))
-      admin-username: admin
-      api-token: ((kubelet-password))
-      authorization-mode: rbac
-      tls:
-        heapster: ((tls-heapster))
-        influxdb: ((tls-influxdb))
-        kubernetes: ((tls-kubernetes))
-        kubernetes-dashboard: ((tls-kubernetes-dashboard))
-    release: kubo
-  lifecycle: errand
-  name: apply-addons
-  networks:
-  - name: default
-  stemcell: trusty
-  vm_type: minimal
-- azs:
-  - z1
   - z2
   - z3
-  instances: 3
+  instances: 1
   jobs:
   - name: bpm
     release: bpm
@@ -99,20 +77,21 @@ instance_groups:
     release: kubo
   - name: etcd
     properties:
-      tls:
-        etcd:
-          ca: ((tls-etcd.ca))
-          certificate: ((tls-etcd.certificate))
-          private_key: ((tls-etcd.private_key))
-        etcdctl:
-          ca: ((tls-etcdctl.ca))
-          certificate: ((tls-etcdctl.certificate))
-          private_key: ((tls-etcdctl.private_key))
-        peer:
-          ca: ((tls-etcd.ca))
-          certificate: ((tls-etcd.certificate))
-          private_key: ((tls-etcd.private_key))
-    release: cfcr-etcd
+      etcd:
+        advertise_urls_dns_suffix: etcd.cfcr.internal
+        ca_cert: ((tls-etcd-server.ca))
+        client_cert: ((tls-etcd-client.certificate))
+        client_key: ((tls-etcd-client.private_key))
+        delete_data_dir_on_stop: false
+        dns_health_check_host: 169.254.0.2
+        peer_ca_cert: ((tls-etcd-peer.ca))
+        peer_cert: ((tls-etcd-peer.certificate))
+        peer_key: ((tls-etcd-peer.private_key))
+        peer_require_ssl: true
+        require_ssl: true
+        server_cert: ((tls-etcd-server.certificate))
+        server_key: ((tls-etcd-server.private_key))
+    release: kubo-etcd
   name: master
   networks:
   - name: default
@@ -148,8 +127,6 @@ instance_groups:
       tls_cert: ((tls-docker.certificate))
       tls_key: ((tls-docker.private_key))
     release: docker
-  - name: kubernetes-dependencies
-    release: kubo
   - name: kubelet
     properties:
       api-token: ((kubelet-password))
@@ -172,6 +149,13 @@ instance_groups:
   vm_type: small-highmem
 name: cfcr
 releases:
+- name: kubo-etcd
+  sha1: caa0373b77e9713d2ac707cbe3427b341a3125e1
+  stemcell:
+    os: ubuntu-trusty
+    version: "3541.10"
+  url: https://s3.amazonaws.com/cfcr-compiled-deployment/kubo-etcd/kubo-etcd-9-ubuntu-trusty-3541.10-20180405-093310-5352289-20180405093318.tgz
+  version: "9"
 - name: kubo
   sha1: 9c234d098b4225a28dfe2153a138eb870e3b563c
   stemcell:
@@ -179,13 +163,6 @@ releases:
     version: "3541.10"
   url: https://s3.amazonaws.com/cfcr-compiled-deployment/kubo/kubo-0.15.0-ubuntu-trusty-3541.10-20180405-074849-648470018-20180405074908.tgz
   version: 0.15.0
-- name: cfcr-etcd
-  sha1: f6002961808b4421b46501f25d610d8d28caec4f
-  stemcell:
-    os: ubuntu-trusty
-    version: "3541.10"
-  url: https://s3.amazonaws.com/cfcr-compiled-deployment/cfcr-etcd/cfcr-etcd-1.0-ubuntu-trusty-3541.10-20180405-074417-314447082-20180405074424.tgz
-  version: "1.0"
 - name: docker
   sha1: e23de51f3fb5958192bf6366772bea61364fb22c
   stemcell:
@@ -210,7 +187,7 @@ releases:
 stemcells:
 - alias: trusty
   os: ubuntu-trusty
-  version: "3541.10"
+  version: "3541.9"
 update:
   canaries: 1
   canary_watch_time: 10000-300000
@@ -263,23 +240,22 @@ variables:
     ca: kubo_ca
     common_name: docker.cfcr.internal
   type: certificate
-- name: tls-etcd
+- name: tls-etcd-server
   options:
     alternative_names:
-    - master.default.cfcr.bosh
-    - '*.master.default.cfcr.bosh'
+    - '*.etcd.cfcr.internal'
     ca: kubo_ca
-    common_name: master.default.cfcr.bosh
-    extended_key_usage:
-    - client_auth
-    - server_auth
+    common_name: etcd.cfcr.internal
   type: certificate
-- name: tls-etcdctl
+- name: tls-etcd-client
   options:
     ca: kubo_ca
     common_name: etcdClient
-    extended_key_usage:
-    - client_auth
+  type: certificate
+- name: tls-etcd-peer
+  options:
+    ca: kubo_ca
+    common_name: '*.etcd.cfcr.internal'
   type: certificate
 - name: tls-heapster
   options:
