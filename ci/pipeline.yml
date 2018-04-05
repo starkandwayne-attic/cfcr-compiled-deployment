@@ -27,6 +27,19 @@ meta:
     username:   admin
     password:   (( param "Please specify the BOSH Director admin password" ))
 
+groups:
+- name: main
+  jobs:
+  - manifest
+  - docker-compile-release-3541
+  - etcd-compile-release-3541
+  - kubo-compile-release-3541
+  - bpm-compile-release-3541
+- name: future
+  jobs:
+  - future
+  - kubo-etcd-compile-release-3541
+  - bosh-dns-compile-release-3541
 jobs:
 - name: future
   plan:
