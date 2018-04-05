@@ -1,0 +1,30 @@
+- path: /releases/name=bpm/url
+  type: replace
+  value: "https://s3.amazonaws.com/cfcr-compiled-deployment/bpm/bpm-0.5.0-ubuntu-trusty-3541.10-20180405-074159-128200833-20180405074206.tgz"
+- path: /releases/name=bpm/version
+  type: replace
+  value: "0.5.0"
+- path: /releases/name=bpm/sha1
+  type: replace
+  value: "99b62d4d5e70f008b7c7b72f76445424d07db425"
+- path: /releases/name=bpm/stemcell?
+  type: replace
+  value:
+    os: "ubuntu-trusty"
+    version: "3541.10"
+
+- path: /releases/name=cfcr-etcd/url
+  type: replace
+  value: "https://s3.amazonaws.com/cfcr-compiled-deployment/cfcr-etcd/cfcr-etcd-1.0-ubuntu-trusty-3541.10-20180405-074417-314447082-20180405074424.tgz"
+- path: /releases/name=cfcr-etcd/version
+  type: replace
+  value: "1.0"
+- path: /releases/name=cfcr-etcd/sha1
+  type: replace
+  value: "f6002961808b4421b46501f25d610d8d28caec4f"
+- path: /releases/name=cfcr-etcd/stemcell?
+  type: replace
+  value:
+    os: "ubuntu-trusty"
+    version: "3541.10"
+
