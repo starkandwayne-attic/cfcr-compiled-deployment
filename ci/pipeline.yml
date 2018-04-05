@@ -1,0 +1,49 @@
+---
+meta:
+  name: cfcr-compiled-deployment
+  pipeline: (( grab meta.name ))
+
+  github:
+    private_key:  ((github-private-key))
+    access_token: ((github-access-token))
+
+jobs:
+- name: noop
+  plan:
+  - aggregate:
+    - get: kubo-deployment
+    - get: kubo-release
+    - get: bosh-dns-release
+    - get: bpm-release
+    - get: docker-boshrelease
+    - get: cfcr-etcd-release
+
+resources:
+- name: kubo-deployment
+  type: git
+  source:
+    uri: https://github.com/cloudfoundry-incubator/kubo-deployment
+- name: kubo-release
+  type: bosh-io-release
+  source:
+    repository: cloudfoundry-incubator/kubo-release
+- name: bosh-dns-release
+  type: bosh-io-release
+  source:
+    repository: cloudfoundry/bosh-dns-release
+- name: bpm-release
+  type: bosh-io-release
+  source:
+    repository: cloudfoundry-incubator/bpm-release
+- name: docker-boshrelease
+  type: github-release
+  source:
+    owner: cloudfoundry-incubator
+    repository: docker-boshrelease
+    access_token: (( grab meta.github.access_token ))
+- name: cfcr-etcd-release
+  type: github-release
+  source:
+    owner: cloudfoundry-incubator
+    repository: cfcr-etcd-release
+    access_token: (( grab meta.github.access_token ))
