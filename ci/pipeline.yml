@@ -87,7 +87,7 @@ jobs:
 
 
 - name: bpm-compile-release-3541
-  serial_groups: [compile-release]
+  serial: true
   plan:
     - aggregate:
       - get: git
@@ -124,7 +124,7 @@ jobs:
         file: "compiled-release/bpm/*.tgz"
 
 - name: bosh-dns-compile-release-3541
-  serial_groups: [compile-release]
+  serial: true
   plan:
     - aggregate:
       - get: git
@@ -161,7 +161,7 @@ jobs:
         file: "compiled-release/bosh-dns/*.tgz"
 
 - name: docker-compile-release-3541
-  serial_groups: [compile-release]
+  serial: true
   plan:
     - aggregate:
       - get: git
@@ -198,7 +198,7 @@ jobs:
         file: "compiled-release/docker/*.tgz"
 
 - name: etcd-compile-release-3541
-  serial_groups: [compile-release]
+  serial: true
   plan:
     - aggregate:
       - get: git
@@ -235,7 +235,7 @@ jobs:
         file: "compiled-release/cfcr-etcd/*.tgz"
 
 - name: kubo-etcd-compile-release-3541
-  serial_groups: [compile-release]
+  serial: true
   plan:
     - aggregate:
       - get: git
@@ -272,7 +272,7 @@ jobs:
         file: "compiled-release/kubo-etcd/*.tgz"
 
 - name: kubo-compile-release-3541
-  serial_groups: [compile-release]
+  serial: true
   plan:
     - aggregate:
       - get: git
