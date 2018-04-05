@@ -7,13 +7,28 @@ git clone ${REPO_ROOT:?required} ${REPO_OUT:?required}
 STEMCELL_OS=${STEMCELL_OS:-ubuntu-trusty}
 STEMCELL_VERSION=$(cat stemcell/version)
 
-rm ${REPO_OUT}/use-compiled-releases.yml
+releases=($(ls -d *-compiled-release))
 
-releases=$(ls *-compiled-release)
+rm -f ${REPO_OUT}/use-compiled-releases.yml
 for release in "${releases[@]}"; do
-  cat >> ${REPO_OUT}/use-compiled-releases.yml <<-YAML
 
-- path: /releases/name=${release}/stemcell?
+  tar -xzf $release/*.tgz $( tar -tzf $release/*.tgz | grep 'release.MF' )
+  release_name=$( grep -E '^name: ' release.MF | awk '{print $2}' | tr -d "\"'" )
+  release_version=$( grep -E '^version: ' release.MF | awk '{print $2}' | tr -d "\"'" )
+  release_url=$(cat $release/url)
+  release_sha1=$(sha1sum $release/*.tgz | awk '{print $1}')
+
+  cat >> ${REPO_OUT}/use-compiled-releases.yml <<-YAML
+- path: /releases/name=${release_name}/url
+  type: replace
+  value: "${release_url}"
+- path: /releases/name=${release_name}/version
+  type: replace
+  value: "${release_version}"
+- path: /releases/name=${release_name}/sha1
+  type: replace
+  value: "${release_sha1}"
+- path: /releases/name=${release_name}/stemcell?
   type: replace
   value:
     os: "${STEMCELL_OS}"
