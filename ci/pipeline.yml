@@ -24,15 +24,22 @@ meta:
     password:   (( param "Please specify the BOSH Director admin password" ))
 
 jobs:
-- name: noop
+- name: manifest
   plan:
   - aggregate:
     - get: kubo-deployment
-    - get: kubo-release
-    - get: bosh-dns-release
-    - get: bpm-release
-    - get: docker-boshrelease
-    - get: cfcr-etcd-release
+    - get: kubo-compiled-release
+      passed: [kubo-compile-release-3541]
+      trigger: true
+    - get: bosh-dns-compiled-release
+      passed: [bosh-dns-compile-release-3541]
+    - get: bpm-compiled-release
+      passed: [bpm-compile-release-3541]
+    - get: docker-compiled-release
+      passed: [docker-compile-release-3541]
+      trigger: true
+    - get: etcd-compiled-release
+      passed: [etcd-compile-release-3541]
 
 - name: bpm-compile-release-3541
   serial_groups: [compile-release]
