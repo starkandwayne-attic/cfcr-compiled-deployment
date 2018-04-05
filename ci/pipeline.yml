@@ -64,7 +64,7 @@ jobs:
       - get: kubo-etcd-compiled-release
         passed: [kubo-etcd-compile-release-3541]
       - get: ubuntu-trusty-stemcell-3541
-        passed: [kubo-compile-release-3541, docker-compile-release-3541]
+        passed: [kubo-compile-release-3541]
         params: {tarball: false}
     - task: update-manifest
       config:
