@@ -69,10 +69,7 @@ jobs:
             enable: true
             force:  true
           manifest: git/cfcr.yml
-          ops_files:
-          - git/operators/testflight.yml
-          vars:
-            name: cfcr-testflight
+          ops_files: [git/operators/testflight.yml]
 
 - name: manifest
   public: true
@@ -144,10 +141,7 @@ jobs:
             enable: true
             force:  true
           manifest: git/cfcr.yml
-          ops_files:
-          - git/operators/testflight.yml
-          vars:
-            name: cfcr-testflight
+          ops_files: [git/operators/testflight.yml]
 
 - name: bpm-compile-release-3541
   public: true

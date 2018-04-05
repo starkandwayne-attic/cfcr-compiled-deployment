@@ -1,7 +1,7 @@
 ---
 - type: replace
   path: /name
-  value: ((name))
+  value: cfcr-testflight
 
 - type: replace
   path: /instance_groups/name=worker/instances
