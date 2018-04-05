@@ -53,6 +53,6 @@ EOF
 bosh -n -d compilation deploy manifest.yml
 bosh -d compilation export-release $RELEASE_NAME/$RELEASE_VERSION $STEMCELL_OS/$STEMCELL_VERSION
 
-mkdir -p compiled-release/compiled-releases
-mv *.tgz compiled-release/compiled-releases/$( echo *.tgz | sed "s/\.tgz$/-$( date -u +%Y%m%d%H%M%S ).tgz/" )
-sha1sum  compiled-release/compiled-releases/*.tgz
+mkdir -p compiled-release/$RELEASE_NAME
+mv *.tgz compiled-release/$RELEASE_NAME/$( echo *.tgz | sed "s/\.tgz$/-$( date -u +%Y%m%d%H%M%S ).tgz/" )
+sha1sum  compiled-release/$RELEASE_NAME/*.tgz
