@@ -79,6 +79,7 @@ jobs:
       - aggregate:
         - get: git
         - get: cfcr-manifests
+          trigger: true
           params: {include_source_tarball: true, globs: [x]}
         - get: kubo-compiled-release
           passed: [kubo-compile-release-3541]
