@@ -145,6 +145,43 @@ jobs:
       params:
         file: "compiled-release/cfcr-etcd/*.tgz"
 
+- name: kubo-compile-release-3541
+  serial_groups: [compile-release]
+  plan:
+    - aggregate:
+      - get: git
+      - get: github
+        resource: kubo-release
+        trigger: true
+      - get: ubuntu-trusty-stemcell-3541
+        params: {tarball: false}
+    - task: export-release
+      config:
+        platform: linux
+        image_resource:
+          type: docker-image
+          source:
+            repository: (( grab meta.image.name ))
+            tag:        (( grab meta.image.tag ))
+        inputs:
+          - name: git
+          - name: ubuntu-trusty-stemcell-3541
+            path: stemcell
+          - name: github
+            path: release
+        outputs:
+          - name: compiled-release
+        run:
+          path: git/ci/scripts/export-release
+        params:
+          BOSH_ENVIRONMENT:     (( grab meta.bosh-lite.target ))
+          BOSH_CA_CERT:         (( grab meta.bosh-lite.cacert ))
+          BOSH_CLIENT:          (( grab meta.bosh-lite.username ))
+          BOSH_CLIENT_SECRET:   (( grab meta.bosh-lite.password ))
+    - put: kubo-compiled-release
+      params:
+        file: "compiled-release/kubo/*.tgz"
+
 
 resources:
 - name: git
@@ -213,3 +250,12 @@ resources:
     access_key_id:     (( grab meta.aws.access_key ))
     secret_access_key: (( grab meta.aws.secret_key ))
     regexp:            "cfcr-etcd/.*-(\\d+).tgz"
+
+- name: kubo-compiled-release
+  type: s3
+  source:
+    bucket:            (( grab meta.aws.bucket ))
+    region_name:       (( grab meta.aws.region_name ))
+    access_key_id:     (( grab meta.aws.access_key ))
+    secret_access_key: (( grab meta.aws.secret_key ))
+    regexp:            "kubo/.*-(\\d+).tgz"
