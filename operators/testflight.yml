@@ -2,3 +2,7 @@
 - type: replace
   path: /name
   value: ((name))
+
+- type: replace
+  path: /instance_groups/name=worker/instances
+  value: 1

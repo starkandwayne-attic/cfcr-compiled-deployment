@@ -38,6 +38,9 @@ for release in "${releases[@]}"; do
 YAML
 done
 
+rm -rf operators/cfcr
+cp -r $raw_cfcr_manifests/operators/* operators/cfcr/
+
 spruce merge --go-patch \
   $raw_cfcr_manifests/cfcr.yml \
   ${REPO_OUT}/use-compiled-releases.yml > ${REPO_OUT}/cfcr.yml
