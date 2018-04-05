@@ -1,0 +1,21 @@
+#!/bin/bash
+
+set -eu
+
+git clone ${REPO_ROOT:?required} ${REPO_OUT:?required}
+
+spruce merge --prune releases kubo-deployment/manifests/cfcr.yml > ${REPO_OUT}/cfcr.yml
+
+if [[ -z $(git config --global user.email) ]]; then
+  git config --global user.email "${GIT_EMAIL}"
+fi
+if [[ -z $(git config --global user.name) ]]; then
+  git config --global user.name "${GIT_NAME}"
+fi
+
+pushd $REPO_OUT
+  git merge --no-edit ${REPO_OUT_BRANCH}
+  git add -A
+  git status
+  git commit -m "Bumped cfcr.yml"
+popd

@@ -7,6 +7,10 @@ meta:
     name: starkandwayne/concourse
     tag: latest
 
+  git:
+    email:  (( param "Please provide the git email for automated commits" ))
+    name:   (( param "Please provide the git name for automated commits" ))
+
   github:
     private_key:  ((github-private-key))
     access_token: ((github-access-token))
@@ -26,20 +30,48 @@ meta:
 jobs:
 - name: manifest
   plan:
-  - aggregate:
-    - get: kubo-deployment
-    - get: kubo-compiled-release
-      passed: [kubo-compile-release-3541]
-      trigger: true
-    - get: bosh-dns-compiled-release
-      passed: [bosh-dns-compile-release-3541]
-    - get: bpm-compiled-release
-      passed: [bpm-compile-release-3541]
-    - get: docker-compiled-release
-      passed: [docker-compile-release-3541]
-      trigger: true
-    - get: etcd-compiled-release
-      passed: [etcd-compile-release-3541]
+    - aggregate:
+      - get: git
+      - get: kubo-deployment
+      - get: kubo-compiled-release
+        passed: [kubo-compile-release-3541]
+        trigger: true
+      - get: bosh-dns-compiled-release
+        passed: [bosh-dns-compile-release-3541]
+      - get: bpm-compiled-release
+        passed: [bpm-compile-release-3541]
+      - get: docker-compiled-release
+        passed: [docker-compile-release-3541]
+        trigger: true
+      - get: etcd-compiled-release
+        passed: [etcd-compile-release-3541]
+    - task: update-manifest
+      config:
+        platform: linux
+        image_resource:
+          type: docker-image
+          source:
+            repository: (( grab meta.image.name ))
+            tag:        (( grab meta.image.tag ))
+        inputs:
+          - name: git
+          - name: kubo-deployment
+        outputs:
+          - name: pushme
+        run:
+          path: git/ci/scripts/update-manifest
+        params:
+          REPO_ROOT: git
+          REPO_OUT:  pushme
+          REPO_OUT_BRANCH: master
+          GIT_EMAIL: (( grab meta.git.email ))
+          GIT_NAME:  (( grab meta.git.name ))
+    - name: upload-git
+      put: git
+      params:
+        rebase: true
+        repository: pushme
+
 
 - name: bpm-compile-release-3541
   serial_groups: [compile-release]

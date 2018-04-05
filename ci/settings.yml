@@ -4,6 +4,10 @@ meta:
   target:  ohio-cf
   url:     https://ci2.starkandwayne.com
 
+  git:
+    email:  ((git-commit-email))
+    name:   ((git-commit-name))
+
   github:
     private_key:  ((github-private-key))
     access_token: ((github-access-token))
