@@ -19,20 +19,16 @@ for release in "${releases[@]}"; do
   release_sha1=$(sha1sum $release/*.tgz | awk '{print $1}')
 
   cat >> ${REPO_OUT}/use-compiled-releases.yml <<-YAML
-- path: /releases/name=${release_name}/url
-  type: replace
-  value: "${release_url}"
-- path: /releases/name=${release_name}/version
-  type: replace
-  value: "${release_version}"
-- path: /releases/name=${release_name}/sha1
-  type: replace
-  value: "${release_sha1}"
-- path: /releases/name=${release_name}/stemcell?
+- path: /releases/name=${release_name}
   type: replace
   value:
-    os: "${STEMCELL_OS}"
-    version: "${STEMCELL_VERSION}"
+    name:    "${release_name}"
+    url:     "${release_url}"
+    version: "${release_version}"
+    sha1:    "${release_sha1}"
+    stemcell:
+      os: "${STEMCELL_OS}"
+      version: "${STEMCELL_VERSION}"
 
 YAML
 done
