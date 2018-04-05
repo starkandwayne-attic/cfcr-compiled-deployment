@@ -263,8 +263,10 @@ resources:
 - name: git
   type: git
   source:
-    uri: git@github.com:starkandwayne/cfcr-compiled-deployment
+    uri: git@github.com:starkandwayne/cfcr-compiled-deployment.git
+    branch:      master
     private_key: (( grab meta.github.private_key ))
+
 - name: kubo-deployment
   type: git
   source:
