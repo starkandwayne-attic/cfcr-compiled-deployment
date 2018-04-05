@@ -52,15 +52,28 @@ jobs:
   public: true
   serial_groups: [testflight]
   plan:
-    - get: git
-    - name: bosh-deploy-testflight
-      put: bosh-deploy-testflight
-      params:
-        manifest: git/cfcr.yml
-        ops_files:
-        - git/operators/testflight.yml
-        vars:
-          name: cfcr-testflight
+    - do:
+      - get: git
+      - name: bosh-deploy-testflight
+        put: bosh-deploy-testflight
+        params:
+          manifest: git/cfcr.yml
+          ops_files:
+          - git/operators/testflight.yml
+          vars:
+            name: cfcr-testflight
+      ensure:
+        put: bosh-deploy-testflight
+        params:
+          delete:
+            enable: true
+            force:  true
+          manifest: git/cfcr.yml
+          ops_files:
+          - git/operators/testflight.yml
+          vars:
+            name: cfcr-testflight
+
 - name: manifest
   public: true
   serial_groups: [testflight]
