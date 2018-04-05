@@ -171,12 +171,9 @@ releases:
   url: https://s3.amazonaws.com/cfcr-compiled-deployment/docker/docker-31.0.1-ubuntu-trusty-3541.10-20180405-074008-064358318-20180405074014.tgz
   version: 31.0.1
 - name: bosh-dns
-  sha1: d350fdffbe2c42a46a2fd3579961dbc926208e91
-  stemcell:
-    os: ubuntu-trusty
-    version: "3541.10"
-  url: https://s3.amazonaws.com/cfcr-compiled-deployment/bosh-dns/bosh-dns-1.4.0-ubuntu-trusty-3541.10-20180405-075232-983964588-20180405075238.tgz
-  version: 1.4.0
+  sha1: 9231b7c7d2f6aa85e0cb77fdeef7add54fdb3f1a
+  url: https://bosh.io/d/github.com/cloudfoundry/bosh-dns-release?v=0.2.0
+  version: 0.2.0
 - name: bpm
   sha1: 99b62d4d5e70f008b7c7b72f76445424d07db425
   stemcell:
