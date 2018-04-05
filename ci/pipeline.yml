@@ -32,6 +32,8 @@ jobs:
   plan:
     - get: etcd-compiled-release
       passed: [etcd-compile-release-3541]
+    - get: bosh-dns-compiled-release
+      passed: [bosh-dns-compile-release-3541]
 - name: manifest
   plan:
     - aggregate:
@@ -40,8 +42,8 @@ jobs:
         params: {include_source_tarball: true, globs: [x]}
       - get: kubo-compiled-release
         passed: [kubo-compile-release-3541]
-      - get: bosh-dns-compiled-release
-        passed: [bosh-dns-compile-release-3541]
+      # - get: bosh-dns-compiled-release
+      #   passed: [bosh-dns-compile-release-3541]
       - get: bpm-compiled-release
         passed: [bpm-compile-release-3541]
       - get: docker-compiled-release
@@ -64,7 +66,7 @@ jobs:
           - name: cfcr-manifests
           - name: ubuntu-trusty-stemcell-3541
             path: stemcell
-          - name: bosh-dns-compiled-release
+          # - name: bosh-dns-compiled-release
           - name: bpm-compiled-release
           - name: docker-compiled-release
           - name: kubo-etcd-compiled-release
