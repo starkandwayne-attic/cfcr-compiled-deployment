@@ -1,15 +1,16 @@
 # CFCR/Kubo Deployment with Compiled Releases
 
-I want it to be fast and fun for people to get started with BOSH and Kubernetes. 
+I want it to be fast and fun for people to get started with BOSH and Kubernetes.
 
-So now you can get started with these commands:
+How fun and fast? Try out:
 
-* `bucc up` to use [BUCC](https://github.com/starkandwayne/bucc) to deploy a BOSH environment to your favourite cloud (or locally via VirtualBox)
-* `bosh upload-stemcell` with a v3541.X stemcell for your CPI
-* `bosh update-cloud-config` with a cloud-config that works with CFAR from `cf-deployment`
-* `bosh deploy cfcr.yml` to deploy CFCR/Kubernetes using pre-compiled BOSH releases
+```plain
+bosh -d cfcr deploy <(curl -L https://raw.githubusercontent.com/starkandwayne/cfcr-compiled-deployment/master/cfcr.yml)
+```
 
-Many of the BOSH releases used have been pre-compiled for you, so that's lovely and fast.
+The only requirements are an existing BOSH environment with v3541.X stemcell and a cloud-config similar to [cf-deployment](https://github.com/cloudfoundry/cf-deployment).
+
+Many of the BOSH releases used have been pre-compiled for you, so its even more lovely and fast.
 
 ```plain
 $ bosh instances -d cfcr
