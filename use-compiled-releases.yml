@@ -13,9 +13,9 @@
   type: replace
   value:
     name:    "docker"
-    url:     "https://s3.amazonaws.com/cfcr-compiled-deployment/docker/docker-31.0.1-ubuntu-trusty-3541.10-20180405-074008-064358318-20180405074014.tgz"
-    version: "31.0.1"
-    sha1:    "e23de51f3fb5958192bf6366772bea61364fb22c"
+    url:     "https://s3.amazonaws.com/cfcr-compiled-deployment/docker/docker-31.1.0-ubuntu-trusty-3541.10-20180406-115549-706861538-20180406115558.tgz"
+    version: "31.1.0"
+    sha1:    "498f064e21700175a7868b8855ffcc3213351159"
     stemcell:
       os: "ubuntu-trusty"
       version: "3541.10"

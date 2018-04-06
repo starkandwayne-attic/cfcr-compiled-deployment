@@ -164,12 +164,12 @@ releases:
   url: https://s3.amazonaws.com/cfcr-compiled-deployment/kubo/kubo-0.15.0-ubuntu-trusty-3541.10-20180405-074849-648470018-20180405074908.tgz
   version: 0.15.0
 - name: docker
-  sha1: e23de51f3fb5958192bf6366772bea61364fb22c
+  sha1: 498f064e21700175a7868b8855ffcc3213351159
   stemcell:
     os: ubuntu-trusty
     version: "3541.10"
-  url: https://s3.amazonaws.com/cfcr-compiled-deployment/docker/docker-31.0.1-ubuntu-trusty-3541.10-20180405-074008-064358318-20180405074014.tgz
-  version: 31.0.1
+  url: https://s3.amazonaws.com/cfcr-compiled-deployment/docker/docker-31.1.0-ubuntu-trusty-3541.10-20180406-115549-706861538-20180406115558.tgz
+  version: 31.1.0
 - name: bosh-dns
   sha1: 9231b7c7d2f6aa85e0cb77fdeef7add54fdb3f1a
   url: https://bosh.io/d/github.com/cloudfoundry/bosh-dns-release?v=0.2.0
