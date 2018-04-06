@@ -39,9 +39,9 @@ YAML
 done
 
 rm -rf cfcr
-mkdir -p cfcr
-cp -r $raw_cfcr_manifests/ops-files ${REPO_OUT}/cfcr/
-cp -r $raw_cfcr_manifests/helper    ${REPO_OUT}/cfcr/
+mkdir -p ops-files helper
+cp -r $raw_cfcr_manifests/ops-files ${REPO_OUT}/
+cp -r $raw_cfcr_manifests/helper    ${REPO_OUT}/
 
 spruce merge --go-patch \
   $raw_cfcr_manifests/cfcr.yml \
