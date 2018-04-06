@@ -125,7 +125,7 @@ jobs:
       - name: bosh-deploy-testflight
         put: bosh-deploy-testflight
         params:
-          manifest: git/cfcr.yml
+          manifest: pushme/cfcr.yml
           ops_files:
           - git/ci/operators/testflight.yml
           vars:
@@ -141,7 +141,7 @@ jobs:
           delete:
             enabled: true
             force:  true
-          manifest: git/cfcr.yml
+          manifest: pushme/cfcr.yml
           ops_files: [git/ci/operators/testflight.yml]
 
 - name: bpm-compile-release-3541
