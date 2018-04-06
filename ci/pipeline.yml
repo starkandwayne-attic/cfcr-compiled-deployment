@@ -59,7 +59,7 @@ jobs:
         params:
           manifest: git/cfcr.yml
           ops_files:
-          - git/operators/testflight.yml
+          - git/ci/operators/testflight.yml
           vars:
             name: cfcr-testflight
       ensure:
@@ -69,7 +69,7 @@ jobs:
             enabled: true
             force:  true
           manifest: git/cfcr.yml
-          ops_files: [git/operators/testflight.yml]
+          ops_files: [git/ci/operators/testflight.yml]
 
 - name: manifest
   public: true
@@ -127,7 +127,7 @@ jobs:
         params:
           manifest: git/cfcr.yml
           ops_files:
-          - git/operators/testflight.yml
+          - git/ci/operators/testflight.yml
           vars:
             name: cfcr-testflight
       - name: upload-git
@@ -142,7 +142,7 @@ jobs:
             enabled: true
             force:  true
           manifest: git/cfcr.yml
-          ops_files: [git/operators/testflight.yml]
+          ops_files: [git/ci/operators/testflight.yml]
 
 - name: bpm-compile-release-3541
   public: true
