@@ -174,10 +174,11 @@ jobs:
         run:
           path: git/ci/scripts/export-release
         params:
-          BOSH_ENVIRONMENT:     (( grab meta.bosh.target ))
-          BOSH_CA_CERT:         (( grab meta.bosh.cacert ))
-          BOSH_CLIENT:          (( grab meta.bosh.username ))
-          BOSH_CLIENT_SECRET:   (( grab meta.bosh.password ))
+          BOSH_ENVIRONMENT:   (( grab meta.bosh.target ))
+          BOSH_CA_CERT:       (( grab meta.bosh.cacert ))
+          BOSH_CLIENT:        (( grab meta.bosh.username ))
+          BOSH_CLIENT_SECRET: (( grab meta.bosh.password ))
+          STEMCELL_CPI:       aws-xen-hvm
     - put: bpm-compiled-release
       params:
         file: "compiled-release/bpm/*.tgz"
@@ -212,10 +213,11 @@ jobs:
         run:
           path: git/ci/scripts/export-release
         params:
-          BOSH_ENVIRONMENT:     (( grab meta.bosh.target ))
-          BOSH_CA_CERT:         (( grab meta.bosh.cacert ))
-          BOSH_CLIENT:          (( grab meta.bosh.username ))
-          BOSH_CLIENT_SECRET:   (( grab meta.bosh.password ))
+          BOSH_ENVIRONMENT:   (( grab meta.bosh.target ))
+          BOSH_CA_CERT:       (( grab meta.bosh.cacert ))
+          BOSH_CLIENT:        (( grab meta.bosh.username ))
+          BOSH_CLIENT_SECRET: (( grab meta.bosh.password ))
+          STEMCELL_CPI:       aws-xen-hvm
     - put: bosh-dns-compiled-release
       params:
         file: "compiled-release/bosh-dns/*.tgz"
@@ -250,10 +252,11 @@ jobs:
         run:
           path: git/ci/scripts/export-release
         params:
-          BOSH_ENVIRONMENT:     (( grab meta.bosh.target ))
-          BOSH_CA_CERT:         (( grab meta.bosh.cacert ))
-          BOSH_CLIENT:          (( grab meta.bosh.username ))
-          BOSH_CLIENT_SECRET:   (( grab meta.bosh.password ))
+          BOSH_ENVIRONMENT:   (( grab meta.bosh.target ))
+          BOSH_CA_CERT:       (( grab meta.bosh.cacert ))
+          BOSH_CLIENT:        (( grab meta.bosh.username ))
+          BOSH_CLIENT_SECRET: (( grab meta.bosh.password ))
+          STEMCELL_CPI:       aws-xen-hvm
     - put: docker-compiled-release
       params:
         file: "compiled-release/docker/*.tgz"
@@ -288,10 +291,11 @@ jobs:
         run:
           path: git/ci/scripts/export-release
         params:
-          BOSH_ENVIRONMENT:     (( grab meta.bosh.target ))
-          BOSH_CA_CERT:         (( grab meta.bosh.cacert ))
-          BOSH_CLIENT:          (( grab meta.bosh.username ))
-          BOSH_CLIENT_SECRET:   (( grab meta.bosh.password ))
+          BOSH_ENVIRONMENT:   (( grab meta.bosh.target ))
+          BOSH_CA_CERT:       (( grab meta.bosh.cacert ))
+          BOSH_CLIENT:        (( grab meta.bosh.username ))
+          BOSH_CLIENT_SECRET: (( grab meta.bosh.password ))
+          STEMCELL_CPI:       aws-xen-hvm
     - put: etcd-compiled-release
       params:
         file: "compiled-release/cfcr-etcd/*.tgz"
@@ -326,10 +330,11 @@ jobs:
         run:
           path: git/ci/scripts/export-release
         params:
-          BOSH_ENVIRONMENT:     (( grab meta.bosh.target ))
-          BOSH_CA_CERT:         (( grab meta.bosh.cacert ))
-          BOSH_CLIENT:          (( grab meta.bosh.username ))
-          BOSH_CLIENT_SECRET:   (( grab meta.bosh.password ))
+          BOSH_ENVIRONMENT:   (( grab meta.bosh.target ))
+          BOSH_CA_CERT:       (( grab meta.bosh.cacert ))
+          BOSH_CLIENT:        (( grab meta.bosh.username ))
+          BOSH_CLIENT_SECRET: (( grab meta.bosh.password ))
+          STEMCELL_CPI:       aws-xen-hvm
     - put: kubo-etcd-compiled-release
       params:
         file: "compiled-release/kubo-etcd/*.tgz"
@@ -364,10 +369,11 @@ jobs:
         run:
           path: git/ci/scripts/export-release
         params:
-          BOSH_ENVIRONMENT:     (( grab meta.bosh.target ))
-          BOSH_CA_CERT:         (( grab meta.bosh.cacert ))
-          BOSH_CLIENT:          (( grab meta.bosh.username ))
-          BOSH_CLIENT_SECRET:   (( grab meta.bosh.password ))
+          BOSH_ENVIRONMENT:   (( grab meta.bosh.target ))
+          BOSH_CA_CERT:       (( grab meta.bosh.cacert ))
+          BOSH_CLIENT:        (( grab meta.bosh.username ))
+          BOSH_CLIENT_SECRET: (( grab meta.bosh.password ))
+          STEMCELL_CPI:       aws-xen-hvm
     - put: kubo-compiled-release
       params:
         file: "compiled-release/kubo/*.tgz"

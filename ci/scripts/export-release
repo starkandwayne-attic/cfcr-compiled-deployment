@@ -13,8 +13,9 @@ set -eu
 
 STEMCELL_OS=${STEMCELL_OS:-ubuntu-trusty}
 STEMCELL_VERSION=$(cat stemcell/version)
+STEMCELL_CPI=${STEMCELL_CPI:-warden-boshlite}
 
-bosh -n upload-stemcell "https://bosh.io/d/stemcells/bosh-warden-boshlite-${STEMCELL_OS}-go_agent?v=${STEMCELL_VERSION}"
+bosh -n upload-stemcell "https://bosh.io/d/stemcells/bosh-${STEMCELL_CPI}-${STEMCELL_OS}-go_agent?v=${STEMCELL_VERSION}"
 
 #
 # release metadata/upload
