@@ -25,3 +25,114 @@ worker/e3ad4443-2d67-47ba-b661-5f68929bd711  running        z3  10.10.1.13
 ```
 
 The `cfcr.yml` file, and the pre-compiled releases, are built by [Stark & Wayne CI pipeline](https://ci2.starkandwayne.com/teams/cfcommunity/pipelines/cfcr-compiled-deployment).
+
+## Thanks
+
+This project is only possible thanks to the CFCR team (heavily sponsored by Pivotal and VMWare). The `ops-files` and `helper` folders are taken from the upstream [kubo-deployment](https://github.com/cloudfoundry-incubator/kubo-deployment) project's `manifests` folder. The `cfcr.yml` file is also originally sourced from [manifests/cfcr.yml](https://github.com/cloudfoundry-incubator/kubo-deployment/blob/master/manifests/cfcr.yml), but modified with pre-compiled final releases so everything "just works" out of the box.
+
+Once kubo-deployment project starts maintaining a stable `master` branch and the `manifests/cfcr.yml` file includes pre-compiled final releases then this repository will not be necessary. Although the walk-thrus may still be valuable as they are different from https://docs-cfcr.cfapps.io/.
+
+## Walk thru
+
+This section will include a walk thru for various CPI/IaaS/Clouds.
+
+### AWS
+
+The prerequisites for this walk thru are:
+
+* an AWS account
+* an admin/poweruser IAM user with API keys
+* a VPC and subnet
+* security groups to allow ingress traffic on ports 22, 443, and 25555; as well as all traffic between VMs using the same security group
+
+#### Deploy BOSH/BUCC to AWS
+
+To provision a BOSH environment with Credhub/UAA/Concourse, I recommend [BUCC](https://github.com/starkandwayne/bucc). It makes it easy and provides you with helper commands to login to BOSH and CredHub.
+
+NOTE: see comments below about performing this walk-thru upon an existing AWS VM rather than your local computer. See YouTube video [Walk thru using BUCC/BOSH](https://www.youtube.com/watch?v=aDg9kuv6hjg) to learn more about production AWS environments with jumpboxes, private subnets, and BUCC.
+
+```plain
+mkdir ~/workspace
+cd ~/workspace
+git clone https://github.com/starkandwayne/bucc
+source <(~/workspace/bucc/bin/bucc env)
+bucc up --cpi aws
+```
+
+This will download the `bosh` CLI and then create stub `~/workspace/bucc/vars.yml` where you fill in your AWS credentials, networking etc.
+
+```plain
+installing bosh cli '2.0.48' into: /Users/drnic/workspace/bucc/bin/
+We just copied a template in /Users/drnic/workspace/bucc/vars.yml please adjust it to your needs
+```
+
+When you're done run `bucc up` again to bring up your BOSH environment:
+
+```plain
+bucc up
+```
+
+This will take some time depending a lot on your upload/download Internet speed. It will take:
+
+* a few minutes or hours to download about 1G of pre-compiled BOSH releases
+* a few minutesto compile the AWS CPI locally
+* a minute or so to provision an AWS VM
+* a few minutes or hours to upload the 1G of BOSH releases to the VM
+* a few minutes to compile the AWS CPI upon your new VM
+* a few minutes for the BOSH/UAA/CredHub/Concourse processes to start up
+
+This sequence will be a lot faster if you perform it upon another AWS VM (download and upload times will reduce to almost zero).
+
+When its complete, re-source your environment to setup various `$BOSH` environment variables for your BOSH environment:
+
+```plain
+source <(~/workspace/bucc/bin/bucc env)
+bosh env
+```
+
+#### Setup AWS BOSH
+
+The `bucc up` command creates or upgrades your BOSH environment. It does not populate it with stemcells or cloud-config (nor CFCR clusters or other deployments). So, let's setup our BOSH environment for CFCR.
+
+A stemcell is BOSH terminology for AWS AMI in your AWS region. The `cfcr.yml` includes pre-compiled packages (hurray for not having to watch compilation) that require any `3541.X` stemcell:
+
+```plain
+bosh upload-stemcell https://bosh.io/d/stemcells/bosh-aws-xen-hvm-ubuntu-trusty-go_agent?v=3541.10
+```
+
+Setting up your cloud-config is more difficult to simplify for a walk-thru. But let's try.
+
+There is a very simple AWS cloud-config provided by [bosh-deployment](https://github.com/cloudfoundry/bosh-deployment/).
+
+```plain
+bosh update-cloud-config ~/workspace/bucc/src/bosh-deployment/aws/cloud-config.yml \
+  -l ~/workspace/bucc/vars.yml
+```
+
+This creates a cloud-config with a network `default` (the same subnet you used for your BOSH environment), and vm_types `default` (`m4.large`) and `large` (`m4.xlarge`). These are pretty good for us to get started with our CFCR deployment.
+
+But they don't match the requirements of `cfcr.yml`. This file references `vm_types` named `small`, `small-highmem`, and `minimal`.
+
+You have a choice: Either we can:
+
+1. update our `cloud-config` to add these additional `vm_types`, or
+1. update our `cfcr.yml` deployment manifest to use the available `vm_types`
+
+Fortunately, this project (which originates from upstream [kubo-deployment](https://github.com/cloudfoundry-incubator/kubo-deployment)) contains an operator file to pick different `vm_types`. So I choose option 2. We will modify our `cfcr.yml` via operator files.
+
+#### Deploy CFCR to AWS
+
+You do not need to create or upload any BOSH releases. `bosh deploy cfcr.yml` will do everything for you.
+
+```plain
+cd ~/workspace
+git clone https://github.com/starkandwayne/cfcr-compiled-deployment
+
+export BOSH_DEPLOYMENT=cfcr
+bosh deploy cfcr-compiled-deployment/cfcr.yml \
+  -o cfcr-compiled-deployment/ops-files/vm-types.yml \
+  -v master_vm_type=default \
+  -v worker_vm_type=large
+```
+
+I ran these commands at 10:35am.
