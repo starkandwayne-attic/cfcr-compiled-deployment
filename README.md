@@ -152,6 +152,8 @@ worker/ee08db00-3bc1-4b29-aef4-c207151bf26c  running        z1  10.10.2.6
 
 Once the deployment is running, you can setup your `kubectl` CLI to connect and authenticate you.
 
+Download and install the `kubectl` CLI [using the instructions](https://kubernetes.io/docs/tasks/tools/install-kubectl).
+
 Firstly, to download the `credhub` CLI and login to CredHub API:
 
 ```plain
