@@ -355,6 +355,40 @@ Confirm that the `:8443` TCP route and certificate for Kubernetes API are workin
 kubectl get all
 ```
 
+#### Register service to HTTP or TCP router
+
+To register an HTTP route https://myelastic.apps.mycompany.com to route to your Elastic HTTP API:
+
+```plain
+kubectl label service elasticsearch http-route-sync=myelastic
+```
+
+The route will take a few moments to appear:
+
+```plain
+$ curl -k https://myelastic.apps.mycompany.com
+502 Bad Gateway: Registered endpoint failed to handle the request.
+$ curl -k https://myelastic.apps.mycompany.com
+{
+  "name" : "f6a77df3-a1ae-42a6-b749-87e3a7e88906",
+  "cluster_name" : "myesdb",
+  "cluster_uuid" : "ErRYBEU8QHChXeOV0NOhsA",
+  "version" : {
+    "number" : "5.6.2",
+    "build_hash" : "57e20f3",
+    "build_date" : "2017-09-23T13:16:45.703Z",
+    "build_snapshot" : false,
+    "lucene_version" : "6.6.1"
+  },
+  "tagline" : "You Know, for Search"
+}
+```
+
+To assign yourself public port :9300 on the TCP routing tier `tcp.mycompany.com:9300`:
+
+```plain
+kubectl label service elasticsearch tcp-route-sync=9300
+```
 
 #### Deploy another CFCR cluster
 
