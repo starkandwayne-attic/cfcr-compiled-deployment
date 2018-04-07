@@ -265,6 +265,97 @@ Watch the `es` pod come up:
 kubectl get pods
 ```
 
+#### Setup TCP routing via Cloud Foundry routing mesh
+
+Check that your Cloud Foundry has both HTTP and TCP domains. If missing TCP domains, [follow the instructions](https://docs.cloudfoundry.org/adminguide/enabling-tcp-routing.html) for setting them up.
+
+```plain
+$ cf domains
+Getting domains in org system as admin...
+name                   status   type
+apps.mycompany.com     shared
+tcp.mycompany.com      shared   tcp
+```
+
+We will also be changing how we interact with the Kubernetes API. Instead of using https://IP:8443 we will access it through the Cloud Foundry TCP routing hostname and the selected port; such as https://tcp.mycompany.com:8443
+
+So we need need to have some certificates regenerated to include the new hostname. Delete them from Credhub:
+
+```plain
+cd ~/workspace
+bucc bosh
+bucc credhub
+
+export BOSH_ENVIRONMENT=bucc
+export BOSH_DEPLOYMENT=cfcr
+credhub delete -n /${BOSH_ENVIRONMENT}/${BOSH_DEPLOYMENT}/tls-kubernetes
+credhub delete -n /${BOSH_ENVIRONMENT}/${BOSH_DEPLOYMENT}/tls-kubelet
+```
+
+```plain
+cfcr-compiled-deployment/helper/cf-routing-vars.sh > cf-vars.yml
+```
+
+```plain
+bosh deploy cfcr-compiled-deployment/cfcr.yml \
+  -o cfcr-compiled-deployment/ops-files/vm-types.yml \
+  -v master_vm_type=default \
+  -v worker_vm_type=large \
+  -o cfcr-compiled-deployment/ops-files/allow-privileged-containers.yml \
+  -o cfcr-compiled-deployment/ops-files/cf-routing.yml \
+  -l cf-vars.yml
+```
+
+This will create a new instance called `route-sync` that will provide the facility to watch your Kubernetes services for tags and publish the required HTTP or TCP routes.
+
+```plain
+Task 1640 | 07:32:49 | Creating missing vms: route-sync/59fd5320-b7bf-4240-af48-e7cd36b69e7f (0) (00:01:05)
+```
+
+We can now re-configure `kubectl` to use the new hostname and its matching certificate (rather than use the smelly `--insecure-skip-tls-verify` flag).
+
+First, get the randomly generated Kubernetes API admin password from CredHub again:
+
+```plain
+admin_password=$(bosh int <(credhub get -n "${BOSH_ENVIRONMENT}/${BOSH_DEPLOYMENT}/kubo-admin-password" --output-json) --path=/value)
+```
+
+Next, get your TCP hostname from your `cf-vars.yml` (e.g. `tcp.apps.mycompany.com`):
+
+```plain
+master_host=$(bosh int cf-vars.yml --path /kubernetes_master_host)
+```
+
+Then, store the root certificate in a temporary file:
+
+```plain
+tmp_ca_file="$(mktemp)"
+bosh int <(credhub get -n "${BOSH_ENVIRONMENT}/${BOSH_DEPLOYMENT}/tls-kubernetes" --output-json) --path=/value/ca > "${tmp_ca_file}"
+```
+
+Finally, setup your local `kubectl` configuration:
+
+```plain
+cluster_name="cfcr:${BOSH_ENVIRONMENT}:${BOSH_DEPLOYMENT}"
+user_name="cfcr:${BOSH_ENVIRONMENT}:${BOSH_DEPLOYMENT}-admin"
+context_name="cfcr:${BOSH_ENVIRONMENT}:${BOSH_DEPLOYMENT}"
+
+kubectl config set-cluster "${cluster_name}" \
+  --server="https://${master_host}:8443" \
+  --certificate-authority="${tmp_ca_file}" \
+  --embed-certs=true
+kubectl config set-credentials "${user_name}" --token="${admin_password}"
+kubectl config set-context "${context_name}" --cluster="${cluster_name}" --user="${user_name}"
+kubectl config use-context "${context_name}"
+```
+
+Confirm that the `:8443` TCP route and certificate for Kubernetes API are working:
+
+```plain
+kubectl get all
+```
+
+
 #### Deploy another CFCR cluster
 
 Why have one CFCR/Kubernetes cluster, when you can have many? Each will be independently deployed, configured, and upgradable over time.
