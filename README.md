@@ -176,9 +176,9 @@ Finally, setup your local `kubectl` configuration:
 
 ```plain
 export BOSH_DEPLOYMENT=cfcr
-cluster_name="cfcr:bucc:${BOSH_DEPLOYMENT}"
-user_name="cfcr:bucc:${BOSH_DEPLOYMENT}-admin"
-context_name="cfcr:bucc:${BOSH_DEPLOYMENT}"
+cluster_name="cfcr:${BOSH_ENVIRONMENT}:${BOSH_DEPLOYMENT}"
+user_name="cfcr:${BOSH_ENVIRONMENT}:${BOSH_DEPLOYMENT}-admin"
+context_name="cfcr:${BOSH_ENVIRONMENT}:${BOSH_DEPLOYMENT}"
 
 kubectl config set-cluster "${cluster_name}" \
   --server="https://${master_host}:8443" \
@@ -238,7 +238,34 @@ In the example above, the frontend service is available on port `:30841` on each
 curl 10.10.2.8:30841
 ```
 
-#### Deploy another one
+#### Privileged containers
+
+Some Kubernetes deployments required privileged containers. There is an operator file `allow-privileged-containers.yml` to enable this across your CFCR cluster:
+
+```plain
+bosh deploy cfcr-compiled-deployment/cfcr.yml \
+  -o cfcr-compiled-deployment/ops-files/vm-types.yml \
+  -v master_vm_type=default \
+  -v worker_vm_type=large \
+  -o cfcr-compiled-deployment/ops-files/allow-privileged-containers.yml
+```
+
+You can now deploy the `kubernetes-examples/staging/elasticsearch` deployment which requires privileged containers:
+
+```plain
+cd ~/workspace
+kubectl create -f kubernetes-examples/staging/elasticsearch/service-account.yaml
+kubectl create -f kubernetes-examples/staging/elasticsearch/es-svc.yaml
+kubectl create -f kubernetes-examples/staging/elasticsearch/es-rc.yaml
+```
+
+Watch the `es` pod come up:
+
+```plain
+kubectl get pods
+```
+
+#### Deploy another CFCR cluster
 
 Why have one CFCR/Kubernetes cluster, when you can have many? Each will be independently deployed, configured, and upgradable over time.
 
