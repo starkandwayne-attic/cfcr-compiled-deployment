@@ -148,7 +148,7 @@ worker/3a40714e-dcdb-47a1-b698-4ea434192b6b  running        z3  10.10.2.8
 worker/ee08db00-3bc1-4b29-aef4-c207151bf26c  running        z1  10.10.2.6
 ```
 
-#### Using CFCR
+#### Using CFCR on AWS
 
 Once the deployment is running, you can setup your `kubectl` CLI to connect and authenticate you.
 
@@ -224,8 +224,34 @@ bosh deploy cfcr-compiled-deployment/cfcr.yml \
   -v deployment_name=$BOSH_DEPLOYMENT
 ```
 
+Follow the [Using CFCR on AWS](#using-cfcr-on-aws) instructions to register and login to Kubernetes API with `kubectl`, where `BOSH_DEPLOYMENT=cfcr2`.
+
 Throw the new cluster away when you're ready:
 
 ```plain
 bosh -d cfcr2 delete-deployment
+```
+
+### Cleanup BOSH on AWS
+
+One day you might want to discard everything we've just created together. Ok.
+
+First, delete your deployments:
+
+```plain
+source <(~/workspace/bucc/bin/bucc env)
+bosh deployments
+bosh delete-deployment -d cfcr
+```
+
+Next, tell your BOSH environment to clean up all orphaned disks/volumes, stemcells, etc.
+
+```plain
+bosh clean-up --all
+```
+
+Finally, use `bucc down` to drop your BOSH environment VM:
+
+```plain
+bucc down
 ```
