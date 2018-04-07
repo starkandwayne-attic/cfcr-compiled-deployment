@@ -390,6 +390,33 @@ To assign yourself public port :9300 on the TCP routing tier `tcp.mycompany.com:
 kubectl label service elasticsearch tcp-route-sync=9300
 ```
 
+#### AWS Cloud Provider
+
+```plain
+mkdir -p bucc/operators
+cp cfcr-compiled-deployment/ops-files/iaas/aws/bosh/tags.yml \
+  bucc/operators/
+bucc up
+```
+
+Kubernetes can be configured to communicate with AWS.
+
+```plain
+cd ~/workspace
+bosh deploy cfcr-compiled-deployment/cfcr.yml \
+  -o cfcr-compiled-deployment/ops-files/vm-types.yml \
+  -v master_vm_type=default \
+  -v worker_vm_type=large \
+  -o cfcr-compiled-deployment/ops-files/allow-privileged-containers.yml \
+  -o cfcr-compiled-deployment/ops-files/iaas/aws/cloud-provider.yml \
+  -o cfcr-compiled-deployment/ops-files/iaas/aws/add-master-credentials.yml \
+  -o cfcr-compiled-deployment/ops-files/iaas/aws/add-worker-credentials.yml \
+  -v aws_access_key_id_master=$(bosh int bucc/vars.yml --path /access_key_id) \
+  -v aws_access_key_id_worker=$(bosh int bucc/vars.yml --path /access_key_id) \
+  -v aws_secret_access_key_master=$(bosh int bucc/vars.yml --path /secret_access_key) \
+  -v aws_secret_access_key_worker=$(bosh int bucc/vars.yml --path /secret_access_key)
+```
+
 #### Deploy another CFCR cluster
 
 Why have one CFCR/Kubernetes cluster, when you can have many? Each will be independently deployed, configured, and upgradable over time.
