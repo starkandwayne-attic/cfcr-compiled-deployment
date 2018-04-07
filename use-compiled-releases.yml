@@ -1,3 +1,11 @@
+---
+- type: replace
+  path: /stemcells
+  value:
+  - alias: trusty
+    os: ubuntu-trusty
+    version: "3541.latest"
+
 - path: /releases/name=bpm
   type: replace
   value:
