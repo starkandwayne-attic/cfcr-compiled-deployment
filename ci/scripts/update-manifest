@@ -11,10 +11,21 @@ raw_cfcr_manifests=$(ls -d cfcr-manifests/cloudfoundry-incubator-kubo-deployment
 
 STEMCELL_OS=${STEMCELL_OS:-ubuntu-trusty}
 STEMCELL_VERSION=$(cat stemcell/version)
+STEMCELL_MAJOR_VERSION="${STEMCELL_VERSION%.*}"
 
 releases=($(ls -d *-compiled-release))
 
-rm -f ${REPO_OUT}/use-compiled-releases.yml
+cat > ${REPO_OUT}/use-compiled-releases.yml <<YAML
+---
+- type: replace
+  path: /stemcells
+  value:
+  - alias: trusty
+    os: ubuntu-trusty
+    version: "${STEMCELL_MAJOR_VERSION}.latest"
+
+YAML
+
 for release in "${releases[@]}"; do
 
   tar -xzf $release/*.tgz $( tar -tzf $release/*.tgz | grep 'release.MF' )
