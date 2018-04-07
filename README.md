@@ -135,4 +135,51 @@ bosh deploy cfcr-compiled-deployment/cfcr.yml \
   -v worker_vm_type=large
 ```
 
-I ran these commands at 10:35am.
+I ran these commands at 10:35am. It finished at around 10:50am, and created a full-functional 1-master, 3-worker cluster of Kubernetes:
+
+```plain
+$ bosh instances
+Deployment 'cfcr'
+
+Instance                                     Process State  AZ  IPs
+master/129f5313-976b-4f89-89c3-dfcb3f207274  running        z1  10.10.2.5
+worker/032096e3-84b0-46d5-9b94-2e0910ebbb1f  running        z2  10.10.2.7
+worker/3a40714e-dcdb-47a1-b698-4ea434192b6b  running        z3  10.10.2.8
+worker/ee08db00-3bc1-4b29-aef4-c207151bf26c  running        z1  10.10.2.6
+```
+
+#### Deploy another one
+
+Why have one CFCR/Kubernetes cluster, when you can have many? Each will be independently deployed, configured, and upgradable over time.
+
+Each BOSH deployment needs a unique name. Currently `cfcr.yml` has a hard-coded `name: cfcr`. We can change this with an operator file.
+
+The `cfcr-compiled-deployment/ops-files` do not provide a simple operator to do this, so let's create a new one to make it easy to create lots of CFCR clusters.
+
+```bash
+cat > ~/workspace/cfcr-set-name.yml <<YAML
+- type: replace
+  path: /name
+  value: ((deployment_name))
+YAML
+```
+
+To create a new `cfcr2` deployment we use the command above, plus our new operator file and `deployment_name` variable:
+
+```plain
+cd ~/workspace
+export BOSH_DEPLOYMENT=cfcr2
+
+bosh deploy cfcr-compiled-deployment/cfcr.yml \
+  -o cfcr-compiled-deployment/ops-files/vm-types.yml \
+  -v master_vm_type=default \
+  -v worker_vm_type=large \
+  -o cfcr-set-name.yml \
+  -v deployment_name=$BOSH_DEPLOYMENT
+```
+
+Throw the new cluster away when you're ready:
+
+```plain
+bosh -d cfcr2 delete-deployment
+```
