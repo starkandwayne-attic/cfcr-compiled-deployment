@@ -28,7 +28,7 @@ The `cfcr.yml` file, and the pre-compiled releases, are built by [Stark & Wayne 
 
 ## Thanks
 
-This project is only possible thanks to the CFCR team (heavily sponsored by Pivotal and VMWare). The `ops-files` and `helper` folders are taken from the upstream [kubo-deployment](https://github.com/cloudfoundry-incubator/kubo-deployment) project's `manifests` folder. The `cfcr.yml` file is also originally sourced from [manifests/cfcr.yml](https://github.com/cloudfoundry-incubator/kubo-deployment/blob/master/manifests/cfcr.yml), but modified with pre-compiled final releases so everything "just works" out of the box.
+This project is only possible thanks to the CFCR team (heavily sponsored by Pivotal, VMWare, and Google). The `ops-files` and `helper` folders are taken from the upstream [kubo-deployment](https://github.com/cloudfoundry-incubator/kubo-deployment) project's `manifests` folder. The `cfcr.yml` file is also originally sourced from [manifests/cfcr.yml](https://github.com/cloudfoundry-incubator/kubo-deployment/blob/master/manifests/cfcr.yml), but modified with pre-compiled final releases so everything "just works" out of the box.
 
 Once kubo-deployment project starts maintaining a stable `master` branch and the `manifests/cfcr.yml` file includes pre-compiled final releases then this repository will not be necessary. Although the walk-thrus may still be valuable as they are different from https://docs-cfcr.cfapps.io/.
 
