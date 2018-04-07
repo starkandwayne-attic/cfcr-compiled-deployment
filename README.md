@@ -148,6 +148,52 @@ worker/3a40714e-dcdb-47a1-b698-4ea434192b6b  running        z3  10.10.2.8
 worker/ee08db00-3bc1-4b29-aef4-c207151bf26c  running        z1  10.10.2.6
 ```
 
+#### Using CFCR
+
+Once the deployment is running, you can setup your `kubectl` CLI to connect and authenticate you.
+
+Firstly, to download the `credhub` CLI and login to CredHub API:
+
+```plain
+bucc credhub
+```
+
+To get the randomly generated Kubernetes API admin password from Credhub:
+
+```plain
+admin_password=$(bosh int <(credhub get -n "bucc/cfcr/kubo-admin-password" --output-json) --path=/value)
+```
+
+Next, get the dynamically assigned IP address of the `master/0` instance:
+
+```plain
+master_host=$(bosh int <(bosh instances --json) --path /Tables/0/Rows/0/ips)
+```
+
+Finally, setup your local `kubectl` configuration:
+
+```plain
+export BOSH_DEPLOYMENT=cfcr
+cluster_name="cfcr:bucc:${BOSH_DEPLOYMENT}"
+user_name="cfcr:bucc:${BOSH_DEPLOYMENT}-admin"
+context_name="cfcr:bucc:${BOSH_DEPLOYMENT}"
+
+kubectl config set-cluster "${cluster_name}" \
+  --server="https://${master_host}:8443" \
+  --insecure-skip-tls-verify=true
+kubectl config set-credentials "${user_name}" --token="${admin_password}"
+kubectl config set-context "${context_name}" --cluster="${cluster_name}" --user="${user_name}"
+kubectl config use-context "${context_name}"
+```
+
+To confirm that you are connected and configured to your Kubernetes cluster:
+
+```plain
+$ kubectl get all
+NAME         TYPE        CLUSTER-IP     EXTERNAL-IP   PORT(S)   AGE
+kubernetes   ClusterIP   10.100.200.1   <none>        443/TCP   17m
+```
+
 #### Deploy another one
 
 Why have one CFCR/Kubernetes cluster, when you can have many? Each will be independently deployed, configured, and upgradable over time.
