@@ -196,6 +196,48 @@ NAME         TYPE        CLUSTER-IP     EXTERNAL-IP   PORT(S)   AGE
 kubernetes   ClusterIP   10.100.200.1   <none>        443/TCP   17m
 ```
 
+#### Example Kubernetes Usage
+
+To deploy the [Kubernetes tutorial Guestbook application](https://kubernetes.io/docs/tutorials/stateless-application/guestbook/):
+
+```plain
+cd ~/workspace
+git https://github.com/kubernetes/examples kubernetes-examples
+kubectl create -f kubernetes-examples/guestbook/redis-master-deployment.yaml
+kubectl create -f kubernetes-examples/guestbook/redis-master-service.yaml
+kubectl create -f kubernetes-examples/guestbook/redis-slave-deployment.yaml
+kubectl create -f kubernetes-examples/guestbook/redis-slave-service.yaml
+kubectl create -f kubernetes-examples/guestbook/frontend-deployment.yaml
+kubectl create -f kubernetes-examples/guestbook/frontend-service.yaml
+```
+
+Watch the pods/containers come up:
+
+```plain
+kubectl get all
+```
+
+By default we will be able to access our frontend application by connecting directly to the workers.
+
+```plain
+$ kubectl get service frontend
+NAME       TYPE       CLUSTER-IP       EXTERNAL-IP   PORT(S)        AGE
+frontend   NodePort   10.100.200.145   <none>        80:30841/TCP   4m
+
+$ bosh instances
+Instance                                     Process State  AZ  IPs
+master/391853a3-0dd0-40ad-9e34-9ddc58c956c0  running        z1  10.10.2.5
+worker/9fc2f8d9-c8ac-427e-8818-d2e3d00636b4  running        z3  10.10.2.8
+worker/b53b3e64-ceef-4980-9145-832c637d4932  running        z1  10.10.2.6
+worker/e85c1c25-17e7-4e81-87bf-7fcd7849cbb7  running        z2  10.10.2.7
+```
+
+In the example above, the frontend service is available on port `:30841` on each worker. Pick a worker IP a try to ping it:
+
+```plain
+curl 10.10.2.8:30841
+```
+
 #### Deploy another one
 
 Why have one CFCR/Kubernetes cluster, when you can have many? Each will be independently deployed, configured, and upgradable over time.
@@ -246,7 +288,7 @@ bosh deployments
 bosh delete-deployment -d cfcr
 ```
 
-Next, tell your BOSH environment to clean up all orphaned disks/volumes, stemcells, etc.
+Next, tell your BOSH environment to clean up all orphaned disks/volumes so that you can stop paying AWS for them:
 
 ```plain
 bosh clean-up --all
