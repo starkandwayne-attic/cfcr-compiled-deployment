@@ -392,17 +392,37 @@ kubectl label service elasticsearch tcp-route-sync=9300
 
 #### AWS Cloud Provider
 
+Kubernetes can be configured to communicate with AWS.
+
+Add a tag called `KubernetesCluster` with a random long string to your AWS Subnet. You'll reuse this long string for your BOSH VM and its managed VMs.
+
+Then, redeploy your BUCC/BOSH by adding a tag to your BOSH VM. You can add the operator file `ops-files/iaas/aws/lb.yml` to your `bosh create-env` command, and providing `-v kubernetes_cluster_tag=<same-random-long-string>` variable.
+
+This operator file adds a `/tags` section to add the `KubernetesCluster` tag on your BOSH VM.
+
+Or if you're following the BUCC instructions in this tutorial, then first add the following line to `bucc/vars.yml`:
+
+```yaml
+kubernetes_cluster_tag: <same-random-long-string>
+```
+
+Next, add the `ops-files/iaas/aws/lb.yml` to your BUCC deployment:
+
 ```plain
 mkdir -p bucc/operators
-cp cfcr-compiled-deployment/ops-files/iaas/aws/bosh/tags.yml \
+cp cfcr-compiled-deployment/ops-files/iaas/aws/lb.yml \
   bucc/operators/
 bucc up
 ```
 
-Kubernetes can be configured to communicate with AWS.
+Next, we also need to add a root `/tags` section to our `cfcr.yml` deployment manifest to add the `KubernetesCluster` tag to all VMs ([learn more about `/tags`](https://bosh.io/docs/manifest-v2.html#tags) in deployment manifests). We can use the same  `ops-files/iaas/aws/lb.yml` operator file as above for `cloud-config`, which is convenient (or confusing if you're trying to figure this out for the first time).
+
+We can pass the `kubernetes_cluster_tag` variable from our `bucc/vars.yml` file (alternately, we could store it in CredHub).
 
 ```plain
 cd ~/workspace
+aws_access_key_id=$(bosh int bucc/vars.yml --path /access_key_id)
+aws_secret_access_key=$(bosh int bucc/vars.yml --path /secret_access_key)
 bosh deploy cfcr-compiled-deployment/cfcr.yml \
   -o cfcr-compiled-deployment/ops-files/vm-types.yml \
   -v master_vm_type=default \
@@ -411,10 +431,12 @@ bosh deploy cfcr-compiled-deployment/cfcr.yml \
   -o cfcr-compiled-deployment/ops-files/iaas/aws/cloud-provider.yml \
   -o cfcr-compiled-deployment/ops-files/iaas/aws/add-master-credentials.yml \
   -o cfcr-compiled-deployment/ops-files/iaas/aws/add-worker-credentials.yml \
-  -v aws_access_key_id_master=$(bosh int bucc/vars.yml --path /access_key_id) \
-  -v aws_access_key_id_worker=$(bosh int bucc/vars.yml --path /access_key_id) \
-  -v aws_secret_access_key_master=$(bosh int bucc/vars.yml --path /secret_access_key) \
-  -v aws_secret_access_key_worker=$(bosh int bucc/vars.yml --path /secret_access_key)
+  -v aws_access_key_id_master=${aws_access_key_id} \
+  -v aws_access_key_id_worker=${aws_access_key_id} \
+  -v aws_secret_access_key_master=${aws_secret_access_key} \
+  -v aws_secret_access_key_worker=${aws_secret_access_key} \
+  -o cfcr-compiled-deployment/ops-files/iaas/aws/lb.yml \
+  -l bucc/vars.yml
 ```
 
 #### Deploy another CFCR cluster
