@@ -127,6 +127,26 @@ jobs:
           - git/ci/operators/testflight.yml
           vars:
             name: cfcr-testflight
+        ensure:
+          task: show-logs
+          config:
+            platform: linux
+            image_resource:
+              type: docker-image
+              source:
+                repository: (( grab meta.image.name ))
+                tag:        (( grab meta.image.tag ))
+            outputs:
+              - name: pushme
+            run:
+              path: bosh
+              args: [logs, --num, 200]
+            params:
+              BOSH_DEPLOYMENT:    cfcr-testflight
+              BOSH_ENVIRONMENT:   (( grab meta.bosh.target ))
+              BOSH_CA_CERT:       (( grab meta.bosh.cacert ))
+              BOSH_CLIENT:        (( grab meta.bosh.username ))
+              BOSH_CLIENT_SECRET: (( grab meta.bosh.password ))
       - name: upload-git
         put: git
         params:
