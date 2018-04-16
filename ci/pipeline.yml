@@ -125,8 +125,9 @@ jobs:
           manifest: pushme/cfcr.yml
           ops_files:
           - git/ci/operators/testflight.yml
+          - git/operators/rename.yml
           vars:
-            name: cfcr-testflight
+            deployment_name: cfcr-testflight
         ensure:
           task: show-logs
           config:
@@ -159,7 +160,11 @@ jobs:
             enabled: true
             force:  true
           manifest: pushme/cfcr.yml
-          ops_files: [git/ci/operators/testflight.yml]
+          ops_files:
+          - git/ci/operators/testflight.yml
+          - git/operators/rename.yml
+          vars:
+            deployment_name: cfcr-testflight
 
 - name: bpm-compile-release-3541
   public: true
