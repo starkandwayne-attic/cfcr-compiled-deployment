@@ -21,9 +21,20 @@
   type: replace
   value:
     name:    "docker"
-    url:     "https://s3.amazonaws.com/cfcr-compiled-deployment/docker/docker-31.1.0-ubuntu-trusty-3541.10-20180406-115549-706861538-20180406115558.tgz"
-    version: "31.1.0"
-    sha1:    "498f064e21700175a7868b8855ffcc3213351159"
+    url:     "https://s3.amazonaws.com/cfcr-compiled-deployment/docker/docker-32.0.0-ubuntu-trusty-3541.10-20180413-145901-277397928-20180413145910.tgz"
+    version: "32.0.0"
+    sha1:    "80e84d12521021dda9eff9ffe1de8d0fe788ca45"
+    stemcell:
+      os: "ubuntu-trusty"
+      version: "3541.10"
+
+- path: /releases/name=cfcr-etcd
+  type: replace
+  value:
+    name:    "cfcr-etcd"
+    url:     "https://s3.amazonaws.com/cfcr-compiled-deployment/cfcr-etcd/cfcr-etcd-1.0-ubuntu-trusty-3541.10-20180405-074417-314447082-20180405074424.tgz"
+    version: "1.0"
+    sha1:    "f6002961808b4421b46501f25d610d8d28caec4f"
     stemcell:
       os: "ubuntu-trusty"
       version: "3541.10"
@@ -32,20 +43,9 @@
   type: replace
   value:
     name:    "kubo"
-    url:     "https://s3.amazonaws.com/cfcr-compiled-deployment/kubo/kubo-0.15.0-ubuntu-trusty-3541.10-20180405-074849-648470018-20180405074908.tgz"
-    version: "0.15.0"
-    sha1:    "9c234d098b4225a28dfe2153a138eb870e3b563c"
-    stemcell:
-      os: "ubuntu-trusty"
-      version: "3541.10"
-
-- path: /releases/name=kubo-etcd
-  type: replace
-  value:
-    name:    "kubo-etcd"
-    url:     "https://s3.amazonaws.com/cfcr-compiled-deployment/kubo-etcd/kubo-etcd-9-ubuntu-trusty-3541.10-20180405-093310-5352289-20180405093318.tgz"
-    version: "9"
-    sha1:    "caa0373b77e9713d2ac707cbe3427b341a3125e1"
+    url:     "https://s3.amazonaws.com/cfcr-compiled-deployment/kubo/kubo-0.16.0-ubuntu-trusty-3541.10-20180409-102610-819124552-20180409102633.tgz"
+    version: "0.16.0"
+    sha1:    "84f3e2aa0f37d3c142b6f3503c6c6502c6232f77"
     stemcell:
       os: "ubuntu-trusty"
       version: "3541.10"
