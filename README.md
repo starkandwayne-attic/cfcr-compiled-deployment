@@ -227,7 +227,7 @@ $ kubectl get service frontend
 NAME       TYPE       CLUSTER-IP       EXTERNAL-IP   PORT(S)        AGE
 frontend   NodePort   10.100.200.145   <none>        80:30841/TCP   4m
 
-$ bosh instances
+$ bosh instances -d cfcr
 Instance                                     Process State  AZ  IPs
 master/391853a3-0dd0-40ad-9e34-9ddc58c956c0  running        z1  10.10.2.5
 worker/9fc2f8d9-c8ac-427e-8818-d2e3d00636b4  running        z3  10.10.2.8
@@ -282,22 +282,26 @@ tcp.mycompany.com      shared   tcp
 
 We will also be changing how we interact with the Kubernetes API. Instead of using https://IP:8443 we will access it through the Cloud Foundry TCP routing hostname and the selected port; such as https://tcp.mycompany.com:8443
 
-So we need need to have some certificates regenerated to include the new hostname. Delete them from Credhub:
+So we need need to have some certificates regenerated to include the new hostname. Delete them from Credhub (the ones to delete are prefixed with `tls-kube`):
 
 ```plain
 cd ~/workspace
 bucc bosh
 bucc credhub
 
-export BOSH_ENVIRONMENT=bucc
-export BOSH_DEPLOYMENT=cfcr
-credhub delete -n /${BOSH_ENVIRONMENT}/${BOSH_DEPLOYMENT}/tls-kubernetes
-credhub delete -n /${BOSH_ENVIRONMENT}/${BOSH_DEPLOYMENT}/tls-kubelet
+credhub find -n cfcr/tls-kube
+
+credhub find -n cfcr/tls-kube -j | jq -r ".credentials[].name" | xargs -L1 credhub delete -n
 ```
 
+There is a helper shell script that will lookup your `cf` deployment credentials for use by CFCR. Store the output to `cf-vars.yml`:
+
 ```plain
+export BOSH_ENVIRONMENT=bucc
 cfcr-compiled-deployment/helper/cf-routing-vars.sh > cf-vars.yml
 ```
+
+Now redeploy `cfcr` with the `cf-routing.yml` operator file and our `cf-vars.yml`:
 
 ```plain
 bosh deploy cfcr-compiled-deployment/cfcr.yml \
@@ -320,7 +324,10 @@ We can now re-configure `kubectl` to use the new hostname and its matching certi
 First, get the randomly generated Kubernetes API admin password from CredHub again:
 
 ```plain
-admin_password=$(bosh int <(credhub get -n "${BOSH_ENVIRONMENT}/${BOSH_DEPLOYMENT}/kubo-admin-password" --output-json) --path=/value)
+credhub find -n cfcr/kubo-admin-password
+
+admin_password_key=$(credhub find -n /cfcr/kubo-admin-password -j | jq -r ".credentials[].name")
+admin_password=$(credhub get -n $admin_password_key -j | jq -r .value)
 ```
 
 Next, get your TCP hostname from your `cf-vars.yml` (e.g. `tcp.apps.mycompany.com`):
@@ -333,7 +340,7 @@ Then, store the root certificate in a temporary file:
 
 ```plain
 tmp_ca_file="$(mktemp)"
-bosh int <(credhub get -n "${BOSH_ENVIRONMENT}/${BOSH_DEPLOYMENT}/tls-kubernetes" --output-json) --path=/value/ca > "${tmp_ca_file}"
+bosh int <(credhub get -n "${BOSH_ENVIRONMENT}/${BOSH_DEPLOYMENT}/tls-kubernetes" -j) --path=/value/ca > "${tmp_ca_file}"
 ```
 
 Finally, setup your local `kubectl` configuration:
