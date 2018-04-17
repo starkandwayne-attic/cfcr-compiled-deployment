@@ -160,7 +160,14 @@ Firstly, to download the `credhub` CLI and login to CredHub API:
 bucc credhub
 ```
 
-To get the randomly generated Kubernetes API admin password from Credhub:
+To get the randomly generated Kubernetes API admin password from Credhub, and set `$admin_password`:
+
+```plain
+credhub find -n cfcr/kubo-admin-password
+admin_password=...
+```
+
+For bucc, you try:
 
 ```plain
 admin_password=$(bosh int <(credhub get -n "bucc/cfcr/kubo-admin-password" --output-json) --path=/value)
@@ -169,13 +176,13 @@ admin_password=$(bosh int <(credhub get -n "bucc/cfcr/kubo-admin-password" --out
 Next, get the dynamically assigned IP address of the `master/0` instance:
 
 ```plain
-master_host=$(bosh int <(bosh instances --json) --path /Tables/0/Rows/0/ips)
+export BOSH_DEPLOYMENT=cfcr
+master_host=$(bosh instances | grep master | awk '{print $4}')
 ```
 
 Finally, setup your local `kubectl` configuration:
 
 ```plain
-export BOSH_DEPLOYMENT=cfcr
 cluster_name="cfcr:${BOSH_ENVIRONMENT}:${BOSH_DEPLOYMENT}"
 user_name="cfcr:${BOSH_ENVIRONMENT}:${BOSH_DEPLOYMENT}-admin"
 context_name="cfcr:${BOSH_ENVIRONMENT}:${BOSH_DEPLOYMENT}"
