@@ -370,7 +370,7 @@ kubectl get all
 To register an HTTP route https://myelastic.apps.mycompany.com to route to your Elastic HTTP API:
 
 ```plain
-kubectl label service elasticsearch http-route-sync=myelastic
+kubectl label service frontend http-route-sync=myelastic
 ```
 
 The route will take a few moments to appear:
@@ -453,17 +453,7 @@ bosh deploy cfcr-compiled-deployment/cfcr.yml \
 
 Why have one CFCR/Kubernetes cluster, when you can have many? Each will be independently deployed, configured, and upgradable over time.
 
-Each BOSH deployment needs a unique name. Currently `cfcr.yml` has a hard-coded `name: cfcr`. We can change this with an operator file.
-
-The `cfcr-compiled-deployment/ops-files` do not provide a simple operator to do this, so let's create a new one to make it easy to create lots of CFCR clusters.
-
-```bash
-cat > ~/workspace/cfcr-set-name.yml <<YAML
-- type: replace
-  path: /name
-  value: ((deployment_name))
-YAML
-```
+Each BOSH deployment needs a unique name. Currently `cfcr.yml` has a hard-coded `name: cfcr`. We can change this with an operator file `operators/rename.yml`.
 
 To create a new `cfcr2` deployment we use the command above, plus our new operator file and `deployment_name` variable:
 
@@ -475,7 +465,7 @@ bosh deploy cfcr-compiled-deployment/cfcr.yml \
   -o cfcr-compiled-deployment/ops-files/vm-types.yml \
   -v master_vm_type=default \
   -v worker_vm_type=large \
-  -o cfcr-set-name.yml \
+  -o cfcr-compiled-deployment/operators/rename.yml \
   -v deployment_name=$BOSH_DEPLOYMENT
 ```
 
