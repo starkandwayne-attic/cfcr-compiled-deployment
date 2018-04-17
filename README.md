@@ -164,13 +164,9 @@ To get the randomly generated Kubernetes API admin password from Credhub, and se
 
 ```plain
 credhub find -n cfcr/kubo-admin-password
-admin_password=...
-```
 
-For bucc, you try:
-
-```plain
-admin_password=$(bosh int <(credhub get -n "bucc/cfcr/kubo-admin-password" --output-json) --path=/value)
+admin_password_key=$(credhub find -n /cfcr/kubo-admin-password -j | jq -r ".credentials[].name")
+admin_password=$(credhub get -n $admin_password_key -j | jq -r .value)
 ```
 
 Next, get the dynamically assigned IP address of the `master/0` instance:
