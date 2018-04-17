@@ -128,7 +128,7 @@ jobs:
           - git/operators/rename.yml
           vars:
             deployment_name: cfcr-testflight
-        ensure:
+        on_failure:
           task: show-logs
           config:
             platform: linux
