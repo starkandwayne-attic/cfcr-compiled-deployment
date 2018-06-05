@@ -89,6 +89,7 @@ jobs:
         - get: etcd-compiled-release
           passed: [etcd-compile-release-3586]
         - get: ubuntu-trusty-stemcell-3586
+          trigger: true
           passed: [kubo-compile-release-3586]
           params: {tarball: false}
       - task: update-manifest
