@@ -32,19 +32,19 @@ groups:
   jobs:
   - testflight
   - manifest
-  - docker-compile-release-3541
-  - etcd-compile-release-3541
-  - kubo-compile-release-3541
-  - bpm-compile-release-3541
+  - docker-compile-release-3586
+  - etcd-compile-release-3586
+  - kubo-compile-release-3586
+  - bpm-compile-release-3586
 - name: future
   jobs:
   - future
-  - bosh-dns-compile-release-3541
+  - bosh-dns-compile-release-3586
 jobs:
 - name: future
   plan:
     - get: bosh-dns-compiled-release
-      passed: [bosh-dns-compile-release-3541]
+      passed: [bosh-dns-compile-release-3586]
 - name: testflight
   public: true
   serial_groups: [testflight]
@@ -79,17 +79,17 @@ jobs:
           trigger: true
           params: {include_source_tarball: true, globs: [x]}
         - get: kubo-compiled-release
-          passed: [kubo-compile-release-3541]
+          passed: [kubo-compile-release-3586]
         # - get: bosh-dns-compiled-release
-        #   passed: [bosh-dns-compile-release-3541]
+        #   passed: [bosh-dns-compile-release-3586]
         - get: bpm-compiled-release
-          passed: [bpm-compile-release-3541]
+          passed: [bpm-compile-release-3586]
         - get: docker-compiled-release
-          passed: [docker-compile-release-3541]
+          passed: [docker-compile-release-3586]
         - get: etcd-compiled-release
-          passed: [etcd-compile-release-3541]
-        - get: ubuntu-trusty-stemcell-3541
-          passed: [kubo-compile-release-3541]
+          passed: [etcd-compile-release-3586]
+        - get: ubuntu-trusty-stemcell-3586
+          passed: [kubo-compile-release-3586]
           params: {tarball: false}
       - task: update-manifest
         config:
@@ -102,7 +102,7 @@ jobs:
           inputs:
             - name: git
             - name: cfcr-manifests
-            - name: ubuntu-trusty-stemcell-3541
+            - name: ubuntu-trusty-stemcell-3586
               path: stemcell
             # - name: bosh-dns-compiled-release
             - name: bpm-compiled-release
@@ -166,7 +166,7 @@ jobs:
           vars:
             deployment_name: cfcr-testflight
 
-- name: bpm-compile-release-3541
+- name: bpm-compile-release-3586
   public: true
   serial: true
   plan:
@@ -175,7 +175,7 @@ jobs:
       - get: github
         resource: bpm-release
         trigger: true
-      - get: ubuntu-trusty-stemcell-3541
+      - get: ubuntu-trusty-stemcell-3586
         params: {tarball: false}
     - task: export-release
       config:
@@ -187,7 +187,7 @@ jobs:
             tag:        (( grab meta.image.tag ))
         inputs:
           - name: git
-          - name: ubuntu-trusty-stemcell-3541
+          - name: ubuntu-trusty-stemcell-3586
             path: stemcell
           - name: github
             path: release
@@ -205,7 +205,7 @@ jobs:
       params:
         file: "compiled-release/bpm/*.tgz"
 
-- name: bosh-dns-compile-release-3541
+- name: bosh-dns-compile-release-3586
   public: true
   serial: true
   plan:
@@ -214,7 +214,7 @@ jobs:
       - get: github
         resource: bosh-dns-release
         trigger: true
-      - get: ubuntu-trusty-stemcell-3541
+      - get: ubuntu-trusty-stemcell-3586
         params: {tarball: false}
     - task: export-release
       config:
@@ -226,7 +226,7 @@ jobs:
             tag:        (( grab meta.image.tag ))
         inputs:
           - name: git
-          - name: ubuntu-trusty-stemcell-3541
+          - name: ubuntu-trusty-stemcell-3586
             path: stemcell
           - name: github
             path: release
@@ -244,7 +244,7 @@ jobs:
       params:
         file: "compiled-release/bosh-dns/*.tgz"
 
-- name: docker-compile-release-3541
+- name: docker-compile-release-3586
   public: true
   serial: true
   plan:
@@ -253,7 +253,7 @@ jobs:
       - get: github
         resource: docker-boshrelease
         trigger: true
-      - get: ubuntu-trusty-stemcell-3541
+      - get: ubuntu-trusty-stemcell-3586
         params: {tarball: false}
     - task: export-release
       config:
@@ -265,7 +265,7 @@ jobs:
             tag:        (( grab meta.image.tag ))
         inputs:
           - name: git
-          - name: ubuntu-trusty-stemcell-3541
+          - name: ubuntu-trusty-stemcell-3586
             path: stemcell
           - name: github
             path: release
@@ -283,7 +283,7 @@ jobs:
       params:
         file: "compiled-release/docker/*.tgz"
 
-- name: etcd-compile-release-3541
+- name: etcd-compile-release-3586
   public: true
   serial: true
   plan:
@@ -292,7 +292,7 @@ jobs:
       - get: github
         resource: cfcr-etcd-release
         trigger: true
-      - get: ubuntu-trusty-stemcell-3541
+      - get: ubuntu-trusty-stemcell-3586
         params: {tarball: false}
     - task: export-release
       config:
@@ -304,7 +304,7 @@ jobs:
             tag:        (( grab meta.image.tag ))
         inputs:
           - name: git
-          - name: ubuntu-trusty-stemcell-3541
+          - name: ubuntu-trusty-stemcell-3586
             path: stemcell
           - name: github
             path: release
@@ -322,7 +322,7 @@ jobs:
       params:
         file: "compiled-release/cfcr-etcd/*.tgz"
 
-- name: kubo-compile-release-3541
+- name: kubo-compile-release-3586
   public: true
   serial: true
   plan:
@@ -331,7 +331,7 @@ jobs:
       - get: github
         resource: kubo-release
         trigger: true
-      - get: ubuntu-trusty-stemcell-3541
+      - get: ubuntu-trusty-stemcell-3586
         params: {tarball: false}
     - task: export-release
       config:
@@ -343,7 +343,7 @@ jobs:
             tag:        (( grab meta.image.tag ))
         inputs:
           - name: git
-          - name: ubuntu-trusty-stemcell-3541
+          - name: ubuntu-trusty-stemcell-3586
             path: stemcell
           - name: github
             path: release
@@ -401,11 +401,11 @@ resources:
     repository: cfcr-etcd-release
     access_token: (( grab meta.github.access_token ))
 
-- name: ubuntu-trusty-stemcell-3541
+- name: ubuntu-trusty-stemcell-3586
   type: bosh-io-stemcell
   source:
     name: bosh-warden-boshlite-ubuntu-trusty-go_agent
-    version_family: 3541.latest
+    version_family: 3586.latest
 
 - name: bpm-compiled-release
   type: s3
