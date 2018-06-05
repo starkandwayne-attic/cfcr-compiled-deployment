@@ -4,49 +4,49 @@
   value:
   - alias: trusty
     os: ubuntu-trusty
-    version: "3541.latest"
+    version: "3586.latest"
 
 - path: /releases/name=bpm
   type: replace
   value:
     name:    "bpm"
-    url:     "https://s3.amazonaws.com/cfcr-compiled-deployment/bpm/bpm-0.5.0-ubuntu-trusty-3541.10-20180405-074159-128200833-20180405074206.tgz"
-    version: "0.5.0"
-    sha1:    "99b62d4d5e70f008b7c7b72f76445424d07db425"
+    url:     "https://s3.amazonaws.com/cfcr-compiled-deployment/bpm/bpm-0.6.0-ubuntu-trusty-3586.16-20180605-001052-526275859-20180605001100.tgz"
+    version: "0.6.0"
+    sha1:    "89c4d44746a62ca9c92f351b418d1f4420c3b806"
     stemcell:
       os: "ubuntu-trusty"
-      version: "3541.10"
+      version: "3586.16"
 
 - path: /releases/name=docker
   type: replace
   value:
     name:    "docker"
-    url:     "https://s3.amazonaws.com/cfcr-compiled-deployment/docker/docker-32.0.0-ubuntu-trusty-3541.10-20180413-145901-277397928-20180413145910.tgz"
+    url:     "https://s3.amazonaws.com/cfcr-compiled-deployment/docker/docker-32.0.0-ubuntu-trusty-3586.16-20180605-005227-257930869-20180605005235.tgz"
     version: "32.0.0"
-    sha1:    "80e84d12521021dda9eff9ffe1de8d0fe788ca45"
+    sha1:    "7ec023e94f9cda4f928bc3bc9c326a579dc90f80"
     stemcell:
       os: "ubuntu-trusty"
-      version: "3541.10"
+      version: "3586.16"
 
 - path: /releases/name=cfcr-etcd
   type: replace
   value:
     name:    "cfcr-etcd"
-    url:     "https://s3.amazonaws.com/cfcr-compiled-deployment/cfcr-etcd/cfcr-etcd-1.0-ubuntu-trusty-3541.10-20180405-074417-314447082-20180405074424.tgz"
-    version: "1.0"
-    sha1:    "f6002961808b4421b46501f25d610d8d28caec4f"
+    url:     "https://s3.amazonaws.com/cfcr-compiled-deployment/cfcr-etcd/cfcr-etcd-1.3-ubuntu-trusty-3586.16-20180605-001012-873763127-20180605001020.tgz"
+    version: "1.3"
+    sha1:    "589eafff5927f9f94ec497e0d6edb2e608a0a1d4"
     stemcell:
       os: "ubuntu-trusty"
-      version: "3541.10"
+      version: "3586.16"
 
 - path: /releases/name=kubo
   type: replace
   value:
     name:    "kubo"
-    url:     "https://s3.amazonaws.com/cfcr-compiled-deployment/kubo/kubo-0.16.0-ubuntu-trusty-3541.10-20180409-102610-819124552-20180409102633.tgz"
-    version: "0.16.0"
-    sha1:    "84f3e2aa0f37d3c142b6f3503c6c6502c6232f77"
+    url:     "https://s3.amazonaws.com/cfcr-compiled-deployment/kubo/kubo-0.17.0-ubuntu-trusty-3586.16-20180605-004641-028620443-20180605004701.tgz"
+    version: "0.17.0"
+    sha1:    "295fed729d4384e7b7cdb0c3091a547bb2a0fd45"
     stemcell:
       os: "ubuntu-trusty"
-      version: "3541.10"
+      version: "3586.16"
 

@@ -5,6 +5,11 @@ addons:
   jobs:
   - name: bosh-dns
     properties:
+      api:
+        client:
+          tls: ((/dns_api_client_tls))
+        server:
+          tls: ((/dns_api_server_tls))
       cache:
         enabled: true
       health:
@@ -48,7 +53,7 @@ instance_groups:
   - z1
   - z2
   - z3
-  instances: 1
+  instances: 3
   jobs:
   - name: bpm
     release: bpm
@@ -79,6 +84,7 @@ instance_groups:
   - name: kube-controller-manager
     properties:
       api-token: ((kube-controller-manager-password))
+      cluster-signing: ((kubo_ca))
       service-account-private-key: ((service-account-key.private_key))
       tls:
         kubernetes: ((tls-kubernetes))
@@ -99,20 +105,24 @@ instance_groups:
     release: kubo
   - name: etcd
     properties:
+      etcd:
+        dns_suffix: etcd.cfcr.internal
       tls:
         etcd:
-          ca: ((tls-etcd.ca))
-          certificate: ((tls-etcd.certificate))
-          private_key: ((tls-etcd.private_key))
+          ca: ((tls-etcd-v0-17-0.ca))
+          certificate: ((tls-etcd-v0-17-0.certificate))
+          private_key: ((tls-etcd-v0-17-0.private_key))
         etcdctl:
           ca: ((tls-etcdctl.ca))
           certificate: ((tls-etcdctl.certificate))
           private_key: ((tls-etcdctl.private_key))
         peer:
-          ca: ((tls-etcd.ca))
-          certificate: ((tls-etcd.certificate))
-          private_key: ((tls-etcd.private_key))
+          ca: ((tls-etcd-v0-17-0.ca))
+          certificate: ((tls-etcd-v0-17-0.certificate))
+          private_key: ((tls-etcd-v0-17-0.private_key))
     release: cfcr-etcd
+  - name: smoke-tests
+    release: kubo
   name: master
   networks:
   - name: default
@@ -131,7 +141,7 @@ instance_groups:
     release: kubo
   - name: docker
     properties:
-      bip: 172.17.0.1/24
+      bridge: cni0
       default_ulimits:
       - nofile=65536
       env: {}
@@ -173,41 +183,41 @@ instance_groups:
 name: cfcr
 releases:
 - name: kubo
-  sha1: 84f3e2aa0f37d3c142b6f3503c6c6502c6232f77
+  sha1: 295fed729d4384e7b7cdb0c3091a547bb2a0fd45
   stemcell:
     os: ubuntu-trusty
-    version: "3541.10"
-  url: https://s3.amazonaws.com/cfcr-compiled-deployment/kubo/kubo-0.16.0-ubuntu-trusty-3541.10-20180409-102610-819124552-20180409102633.tgz
-  version: 0.16.0
+    version: "3586.16"
+  url: https://s3.amazonaws.com/cfcr-compiled-deployment/kubo/kubo-0.17.0-ubuntu-trusty-3586.16-20180605-004641-028620443-20180605004701.tgz
+  version: 0.17.0
 - name: cfcr-etcd
-  sha1: f6002961808b4421b46501f25d610d8d28caec4f
+  sha1: 589eafff5927f9f94ec497e0d6edb2e608a0a1d4
   stemcell:
     os: ubuntu-trusty
-    version: "3541.10"
-  url: https://s3.amazonaws.com/cfcr-compiled-deployment/cfcr-etcd/cfcr-etcd-1.0-ubuntu-trusty-3541.10-20180405-074417-314447082-20180405074424.tgz
-  version: "1.0"
+    version: "3586.16"
+  url: https://s3.amazonaws.com/cfcr-compiled-deployment/cfcr-etcd/cfcr-etcd-1.3-ubuntu-trusty-3586.16-20180605-001012-873763127-20180605001020.tgz
+  version: "1.3"
 - name: docker
-  sha1: 80e84d12521021dda9eff9ffe1de8d0fe788ca45
+  sha1: 7ec023e94f9cda4f928bc3bc9c326a579dc90f80
   stemcell:
     os: ubuntu-trusty
-    version: "3541.10"
-  url: https://s3.amazonaws.com/cfcr-compiled-deployment/docker/docker-32.0.0-ubuntu-trusty-3541.10-20180413-145901-277397928-20180413145910.tgz
+    version: "3586.16"
+  url: https://s3.amazonaws.com/cfcr-compiled-deployment/docker/docker-32.0.0-ubuntu-trusty-3586.16-20180605-005227-257930869-20180605005235.tgz
   version: 32.0.0
 - name: bosh-dns
-  sha1: 9231b7c7d2f6aa85e0cb77fdeef7add54fdb3f1a
-  url: https://bosh.io/d/github.com/cloudfoundry/bosh-dns-release?v=0.2.0
-  version: 0.2.0
+  sha1: 66e74bb601b691ea4836f859c556de8a5c6c1264
+  url: https://bosh.io/d/github.com/cloudfoundry/bosh-dns-release?v=1.5.0
+  version: 1.5.0
 - name: bpm
-  sha1: 99b62d4d5e70f008b7c7b72f76445424d07db425
+  sha1: 89c4d44746a62ca9c92f351b418d1f4420c3b806
   stemcell:
     os: ubuntu-trusty
-    version: "3541.10"
-  url: https://s3.amazonaws.com/cfcr-compiled-deployment/bpm/bpm-0.5.0-ubuntu-trusty-3541.10-20180405-074159-128200833-20180405074206.tgz
-  version: 0.5.0
+    version: "3586.16"
+  url: https://s3.amazonaws.com/cfcr-compiled-deployment/bpm/bpm-0.6.0-ubuntu-trusty-3586.16-20180605-001052-526275859-20180605001100.tgz
+  version: 0.6.0
 stemcells:
 - alias: trusty
   os: ubuntu-trusty
-  version: 3541.latest
+  version: 3586.latest
 update:
   canaries: 1
   canary_watch_time: 10000-300000
@@ -260,13 +270,10 @@ variables:
     ca: kubo_ca
     common_name: docker.cfcr.internal
   type: certificate
-- name: tls-etcd
+- name: tls-etcd-v0-17-0
   options:
-    alternative_names:
-    - master.default.cfcr.bosh
-    - '*.master.default.cfcr.bosh'
     ca: kubo_ca
-    common_name: master.default.cfcr.bosh
+    common_name: '*.etcd.cfcr.internal'
     extended_key_usage:
     - client_auth
     - server_auth
@@ -321,6 +328,28 @@ variables:
   options:
     ca: /dns_healthcheck_tls_ca
     common_name: health.bosh-dns
+    extended_key_usage:
+    - client_auth
+  type: certificate
+- name: /dns_api_tls_ca
+  opsname: global_dns_api_tls_ca
+  options:
+    common_name: dns-api-tls-ca
+    is_ca: true
+  type: certificate
+- name: /dns_api_server_tls
+  opsname: global_dns_api_server_tls
+  options:
+    ca: /dns_api_tls_ca
+    common_name: api.bosh-dns
+    extended_key_usage:
+    - server_auth
+  type: certificate
+- name: /dns_api_client_tls
+  opsname: global_dns_api_client_tls
+  options:
+    ca: /dns_api_tls_ca
+    common_name: api.bosh-dns
     extended_key_usage:
     - client_auth
   type: certificate
