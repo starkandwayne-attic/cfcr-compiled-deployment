@@ -3,11 +3,11 @@
   value: ((deployment_name))
 
 - type: replace
-  path: /variables/name=tls-etcd/options/common_name
+  path: /variables/name=tls-etcd-v0-17-0/options/common_name
   value: "master.default.((deployment_name)).bosh"
 
 - type: replace
-  path: /variables/name=tls-etcd/options/alternative_names
+  path: /variables/name=tls-etcd-v0-17-0/options/alternative_names
   value:
   - "master.default.((deployment_name)).bosh"
   - "*.master.default.((deployment_name)).bosh"
