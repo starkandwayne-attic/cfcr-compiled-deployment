@@ -201,7 +201,7 @@ jobs:
           BOSH_CA_CERT:       (( grab meta.bosh.cacert ))
           BOSH_CLIENT:        (( grab meta.bosh.username ))
           BOSH_CLIENT_SECRET: (( grab meta.bosh.password ))
-          STEMCELL_CPI:       aws-xen-hvm
+          STEMCELL_CPI:       warden-boshlite
     - put: bpm-compiled-release
       params:
         file: "compiled-release/bpm/*.tgz"
@@ -240,7 +240,7 @@ jobs:
           BOSH_CA_CERT:       (( grab meta.bosh.cacert ))
           BOSH_CLIENT:        (( grab meta.bosh.username ))
           BOSH_CLIENT_SECRET: (( grab meta.bosh.password ))
-          STEMCELL_CPI:       aws-xen-hvm
+          STEMCELL_CPI:       warden-boshlite
     - put: bosh-dns-compiled-release
       params:
         file: "compiled-release/bosh-dns/*.tgz"
@@ -279,7 +279,7 @@ jobs:
           BOSH_CA_CERT:       (( grab meta.bosh.cacert ))
           BOSH_CLIENT:        (( grab meta.bosh.username ))
           BOSH_CLIENT_SECRET: (( grab meta.bosh.password ))
-          STEMCELL_CPI:       aws-xen-hvm
+          STEMCELL_CPI:       warden-boshlite
     - put: docker-compiled-release
       params:
         file: "compiled-release/docker/*.tgz"
@@ -318,7 +318,7 @@ jobs:
           BOSH_CA_CERT:       (( grab meta.bosh.cacert ))
           BOSH_CLIENT:        (( grab meta.bosh.username ))
           BOSH_CLIENT_SECRET: (( grab meta.bosh.password ))
-          STEMCELL_CPI:       aws-xen-hvm
+          STEMCELL_CPI:       warden-boshlite
     - put: etcd-compiled-release
       params:
         file: "compiled-release/cfcr-etcd/*.tgz"
@@ -357,7 +357,7 @@ jobs:
           BOSH_CA_CERT:       (( grab meta.bosh.cacert ))
           BOSH_CLIENT:        (( grab meta.bosh.username ))
           BOSH_CLIENT_SECRET: (( grab meta.bosh.password ))
-          STEMCELL_CPI:       aws-xen-hvm
+          STEMCELL_CPI:       warden-boshlite
     - put: kubo-compiled-release
       params:
         file: "compiled-release/kubo/*.tgz"

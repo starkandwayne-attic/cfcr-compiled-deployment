@@ -17,7 +17,7 @@ meta:
     secret_key: ((aws-cfcommunity-secret))
 
   bosh:
-    target:   ((bosh_environment))
-    cacert:   ((bosh_ca_cert))
-    username: ((bosh_client))
-    password: ((bosh_client_secret))
+    target:   ((bosh-lite-environment))
+    cacert:   ((bosh-lite-ca-cert))
+    username: ((bosh-lite-client))
+    password: ((bosh-lite-client-secret))
