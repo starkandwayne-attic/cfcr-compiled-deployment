@@ -10,12 +10,12 @@
   type: replace
   value:
     name:    "bpm"
-    url:     "https://s3.amazonaws.com/cfcr-compiled-deployment/bpm/bpm-0.6.0-ubuntu-trusty-3586.16-20180605-001052-526275859-20180605001100.tgz"
-    version: "0.6.0"
-    sha1:    "89c4d44746a62ca9c92f351b418d1f4420c3b806"
+    url:     "https://s3.amazonaws.com/cfcr-compiled-deployment/bpm/bpm-0.8.0-ubuntu-trusty-3586.24-20180622-010816-470684849-20180622010823.tgz"
+    version: "0.8.0"
+    sha1:    "2e11a4d683d02cc18cca3316e0fd1425bf3a2a2e"
     stemcell:
       os: "ubuntu-trusty"
-      version: "3586.16"
+      version: "3586.26"
 
 - path: /releases/name=docker
   type: replace
@@ -26,27 +26,27 @@
     sha1:    "7ec023e94f9cda4f928bc3bc9c326a579dc90f80"
     stemcell:
       os: "ubuntu-trusty"
-      version: "3586.16"
+      version: "3586.26"
 
 - path: /releases/name=cfcr-etcd
   type: replace
   value:
     name:    "cfcr-etcd"
-    url:     "https://s3.amazonaws.com/cfcr-compiled-deployment/cfcr-etcd/cfcr-etcd-1.3-ubuntu-trusty-3586.16-20180605-001012-873763127-20180605001020.tgz"
-    version: "1.3"
-    sha1:    "589eafff5927f9f94ec497e0d6edb2e608a0a1d4"
+    url:     "https://s3.amazonaws.com/cfcr-compiled-deployment/cfcr-etcd/cfcr-etcd-1.4.0-ubuntu-trusty-3586.26-20180723-101428-920883108-20180723101434.tgz"
+    version: "1.4.0"
+    sha1:    "a297d07f2f172f54817337c06945ddf572e4fa72"
     stemcell:
       os: "ubuntu-trusty"
-      version: "3586.16"
+      version: "3586.26"
 
 - path: /releases/name=kubo
   type: replace
   value:
     name:    "kubo"
-    url:     "https://s3.amazonaws.com/cfcr-compiled-deployment/kubo/kubo-0.17.0-ubuntu-trusty-3586.16-20180605-004641-028620443-20180605004701.tgz"
-    version: "0.17.0"
-    sha1:    "295fed729d4384e7b7cdb0c3091a547bb2a0fd45"
+    url:     "https://s3.amazonaws.com/cfcr-compiled-deployment/kubo/kubo-0.19.0-ubuntu-trusty-3586.26-20180717-215354-937659403-20180717215416.tgz"
+    version: "0.19.0"
+    sha1:    "d721c853dd63064cbd0f9be38623c730e5a42f00"
     stemcell:
       os: "ubuntu-trusty"
-      version: "3586.16"
+      version: "3586.26"
 

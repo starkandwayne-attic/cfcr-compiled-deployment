@@ -36,7 +36,6 @@ instance_groups:
       admin-password: ((kubo-admin-password))
       admin-username: admin
       api-token: ((kubelet-password))
-      authorization-mode: rbac
       tls:
         heapster: ((tls-heapster))
         influxdb: ((tls-influxdb))
@@ -57,15 +56,12 @@ instance_groups:
   jobs:
   - name: bpm
     release: bpm
-  - name: secure-var-vcap
-    release: kubo
   - name: flanneld
     release: kubo
   - name: kube-apiserver
     properties:
       admin-password: ((kubo-admin-password))
       admin-username: admin
-      authorization-mode: rbac
       backend_port: 8443
       kube-controller-manager-password: ((kube-controller-manager-password))
       kube-proxy-password: ((kube-proxy-password))
@@ -76,6 +72,7 @@ instance_groups:
       route-sync-password: ((route-sync-password))
       service-account-public-key: ((service-account-key.public_key))
       tls:
+        kubelet-client: ((tls-kubelet-client))
         kubernetes:
           ca: ((tls-kubernetes.ca))
           certificate: ((tls-kubernetes.certificate))
@@ -99,7 +96,6 @@ instance_groups:
     properties:
       admin-password: ((kubo-admin-password))
       admin-username: admin
-      authorization-mode: rbac
       tls:
         kubernetes: ((tls-kubernetes))
     release: kubo
@@ -135,8 +131,6 @@ instance_groups:
   - z3
   instances: 3
   jobs:
-  - name: secure-var-vcap
-    release: kubo
   - name: flanneld
     release: kubo
   - name: docker
@@ -152,7 +146,7 @@ instance_groups:
       log_options:
       - max-size=128m
       - max-file=2
-      storage_driver: overlay
+      storage_driver: overlay2
       store_dir: /var/vcap/data
       tls_cacert: ((tls-docker.ca))
       tls_cert: ((tls-docker.certificate))
@@ -166,6 +160,8 @@ instance_groups:
       drain-api-token: ((kubelet-drain-password))
       tls:
         kubelet: ((tls-kubelet))
+        kubelet-client-ca:
+          certificate: ((tls-kubelet-client.ca))
         kubernetes: ((tls-kubernetes))
     release: kubo
   - name: kube-proxy
@@ -177,30 +173,29 @@ instance_groups:
   name: worker
   networks:
   - name: default
-  persistent_disk: 10240
   stemcell: trusty
   vm_type: small-highmem
 name: cfcr
 releases:
 - name: kubo
-  sha1: 295fed729d4384e7b7cdb0c3091a547bb2a0fd45
+  sha1: d721c853dd63064cbd0f9be38623c730e5a42f00
   stemcell:
     os: ubuntu-trusty
-    version: "3586.16"
-  url: https://s3.amazonaws.com/cfcr-compiled-deployment/kubo/kubo-0.17.0-ubuntu-trusty-3586.16-20180605-004641-028620443-20180605004701.tgz
-  version: 0.17.0
+    version: "3586.26"
+  url: https://s3.amazonaws.com/cfcr-compiled-deployment/kubo/kubo-0.19.0-ubuntu-trusty-3586.26-20180717-215354-937659403-20180717215416.tgz
+  version: 0.19.0
 - name: cfcr-etcd
-  sha1: 589eafff5927f9f94ec497e0d6edb2e608a0a1d4
+  sha1: a297d07f2f172f54817337c06945ddf572e4fa72
   stemcell:
     os: ubuntu-trusty
-    version: "3586.16"
-  url: https://s3.amazonaws.com/cfcr-compiled-deployment/cfcr-etcd/cfcr-etcd-1.3-ubuntu-trusty-3586.16-20180605-001012-873763127-20180605001020.tgz
-  version: "1.3"
+    version: "3586.26"
+  url: https://s3.amazonaws.com/cfcr-compiled-deployment/cfcr-etcd/cfcr-etcd-1.4.0-ubuntu-trusty-3586.26-20180723-101428-920883108-20180723101434.tgz
+  version: 1.4.0
 - name: docker
   sha1: 7ec023e94f9cda4f928bc3bc9c326a579dc90f80
   stemcell:
     os: ubuntu-trusty
-    version: "3586.16"
+    version: "3586.26"
   url: https://s3.amazonaws.com/cfcr-compiled-deployment/docker/docker-32.0.0-ubuntu-trusty-3586.16-20180605-005227-257930869-20180605005235.tgz
   version: 32.0.0
 - name: bosh-dns
@@ -208,12 +203,12 @@ releases:
   url: https://bosh.io/d/github.com/cloudfoundry/bosh-dns-release?v=1.5.0
   version: 1.5.0
 - name: bpm
-  sha1: 89c4d44746a62ca9c92f351b418d1f4420c3b806
+  sha1: 2e11a4d683d02cc18cca3316e0fd1425bf3a2a2e
   stemcell:
     os: ubuntu-trusty
-    version: "3586.16"
-  url: https://s3.amazonaws.com/cfcr-compiled-deployment/bpm/bpm-0.6.0-ubuntu-trusty-3586.16-20180605-001052-526275859-20180605001100.tgz
-  version: 0.6.0
+    version: "3586.26"
+  url: https://s3.amazonaws.com/cfcr-compiled-deployment/bpm/bpm-0.8.0-ubuntu-trusty-3586.24-20180622-010816-470684849-20180622010823.tgz
+  version: 0.8.0
 stemcells:
 - alias: trusty
   os: ubuntu-trusty
@@ -249,6 +244,14 @@ variables:
     ca: kubo_ca
     common_name: kubelet.cfcr.internal
     organization: system:nodes
+  type: certificate
+- name: tls-kubelet-client
+  options:
+    ca: kubo_ca
+    common_name: kube-apiserver.cfcr.internal
+    extended_key_usage:
+    - client_auth
+    organization: system:masters
   type: certificate
 - name: tls-kubernetes
   options:
