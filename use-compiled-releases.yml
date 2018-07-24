@@ -10,9 +10,9 @@
   type: replace
   value:
     name:    "bpm"
-    url:     "https://s3.amazonaws.com/cfcr-compiled-deployment/bpm/bpm-0.8.0-ubuntu-trusty-3586.24-20180622-010816-470684849-20180622010823.tgz"
-    version: "0.8.0"
-    sha1:    "2e11a4d683d02cc18cca3316e0fd1425bf3a2a2e"
+    url:     "https://s3.amazonaws.com/cfcr-compiled-deployment/bpm/bpm-0.9.0-ubuntu-trusty-3586.26-20180724-233226-013517662-20180724233232.tgz"
+    version: "0.9.0"
+    sha1:    "5bcf79c3d6943153cd733fc7b6dfee368302f7ff"
     stemcell:
       os: "ubuntu-trusty"
       version: "3586.26"
