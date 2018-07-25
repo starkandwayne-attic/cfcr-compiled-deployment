@@ -8,7 +8,7 @@ How fun and fast? Try out:
 bosh -d cfcr deploy <(curl -L https://raw.githubusercontent.com/starkandwayne/cfcr-compiled-deployment/master/cfcr.yml)
 ```
 
-The only requirements are an existing BOSH environment with v3541.X stemcell and a cloud-config similar to [cf-deployment](https://github.com/cloudfoundry/cf-deployment).
+The only requirements are an existing BOSH environment with v3586.X ubuntu-trusty stemcell and a cloud-config similar to [cf-deployment](https://github.com/cloudfoundry/cf-deployment).
 
 Many of the BOSH releases used have been pre-compiled for you, so its even more lovely and fast.
 
@@ -97,7 +97,7 @@ The `bucc up` command creates or upgrades your BOSH environment. It does not pop
 A stemcell is BOSH terminology for AWS AMI in your AWS region. The `cfcr.yml` includes pre-compiled packages (hurray for not having to watch compilation) that require any `3541.X` stemcell:
 
 ```plain
-bosh upload-stemcell https://bosh.io/d/stemcells/bosh-aws-xen-hvm-ubuntu-trusty-go_agent?v=3541.10
+bosh upload-stemcell https://bosh.io/d/stemcells/bosh-aws-xen-hvm-ubuntu-trusty-go_agent?v=3586.26
 ```
 
 Setting up your cloud-config is more difficult to simplify for a walk-thru. But let's try.
