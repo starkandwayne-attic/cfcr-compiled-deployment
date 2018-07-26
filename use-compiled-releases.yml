@@ -6,6 +6,17 @@
     os: ubuntu-trusty
     version: "3586.latest"
 
+- path: /releases/name=bosh-dns
+  type: replace
+  value:
+    name:    "bosh-dns"
+    url:     "https://s3.amazonaws.com/cfcr-compiled-deployment/bosh-dns/bosh-dns-1.8.0-ubuntu-trusty-3586.26-20180724-233908-032325225-20180724233915.tgz"
+    version: "1.8.0"
+    sha1:    "163875859466ffcc2fb88c5621400ac587c24429"
+    stemcell:
+      os: "ubuntu-trusty"
+      version: "3586.26"
+
 - path: /releases/name=bpm
   type: replace
   value:
