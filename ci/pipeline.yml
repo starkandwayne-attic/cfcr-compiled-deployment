@@ -36,15 +36,8 @@ groups:
   - etcd-compile-release-3586
   - kubo-compile-release-3586
   - bpm-compile-release-3586
-- name: future
-  jobs:
-  - future
   - bosh-dns-compile-release-3586
 jobs:
-- name: future
-  plan:
-    - get: bosh-dns-compiled-release
-      passed: [bosh-dns-compile-release-3586]
 - name: testflight
   public: true
   serial_groups: [testflight]
