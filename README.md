@@ -120,6 +120,25 @@ You have a choice: Either we can:
 
 Fortunately, this project (which originates from upstream [kubo-deployment](https://github.com/cloudfoundry-incubator/kubo-deployment)) contains an operator file to pick different `vm_types`. So I choose option 2. We will modify our `cfcr.yml` via operator files.
 
+#### Deploy CFCR to BUCC lite
+
+```plain
+bucc up --lite
+source <(bucc env)
+bucc routes
+bosh update-cloud-config src/bosh-deployment/warden/cloud-config.yml
+bosh upload-stemcell --sha1 2b045cbb20b11924599b021ddbe9acde724731a1 \
+  https://bosh.io/d/stemcells/bosh-warden-boshlite-ubuntu-trusty-go_agent\?v\=3586.26
+
+cd ~/workspace
+git clone https://github.com/starkandwayne/cfcr-compiled-deployment
+
+bosh -d cfcr deploy cfcr-compiled-deployment/cfcr.yml \
+  -o ops-files/iaas/virtualbox/bosh-lite.yml \
+  -o cfcr-compiled-deployment/ops-files/allow-privileged-containers.yml \
+  -o cfcr-compiled-deployment/ops-files/misc/single-master.yml
+```
+
 #### Deploy CFCR to AWS
 
 You do not need to create or upload any BOSH releases. `bosh deploy cfcr.yml` will do everything for you.
