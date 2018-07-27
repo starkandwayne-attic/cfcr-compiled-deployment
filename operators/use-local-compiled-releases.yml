@@ -1,0 +1,20 @@
+- path: /releases/name=bosh-dns/url
+  type: replace
+  value: file://((downloads))/bosh-dns-1.8.0-ubuntu-trusty-3586.26-20180724-233908-032325225-20180724233915.tgz
+
+- path: /releases/name=bpm/url
+  type: replace
+  value: file://((downloads))/bpm-0.9.0-ubuntu-trusty-3586.26-20180724-233226-013517662-20180724233232.tgz
+
+- path: /releases/name=docker/url
+  type: replace
+  value: file://((downloads))/docker-32.0.0-ubuntu-trusty-3586.16-20180605-005227-257930869-20180605005235.tgz
+
+- path: /releases/name=cfcr-etcd/url
+  type: replace
+  value: file://((downloads))/cfcr-etcd-1.4.0-ubuntu-trusty-3586.26-20180723-101428-920883108-20180723101434.tgz
+
+- path: /releases/name=kubo/url
+  type: replace
+  value: file://((downloads))/kubo-0.19.0-ubuntu-trusty-3586.26-20180717-215354-937659403-20180717215416.tgz
+
