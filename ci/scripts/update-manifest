@@ -20,7 +20,7 @@ cat > ${REPO_OUT}/use-compiled-releases.yml <<YAML
 - type: replace
   path: /stemcells
   value:
-  - alias: trusty
+  - alias: default
     os: ubuntu-trusty
     version: "${STEMCELL_MAJOR_VERSION}.latest"
 
