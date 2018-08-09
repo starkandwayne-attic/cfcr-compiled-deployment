@@ -2,7 +2,7 @@
 - type: replace
   path: /stemcells
   value:
-  - alias: trusty
+  - alias: default
     os: ubuntu-trusty
     version: "3586.latest"
 
@@ -15,7 +15,7 @@
     sha1:    "163875859466ffcc2fb88c5621400ac587c24429"
     stemcell:
       os: "ubuntu-trusty"
-      version: "3586.26"
+      version: "3586.27"
 
 - path: /releases/name=bpm
   type: replace
@@ -26,7 +26,7 @@
     sha1:    "5bcf79c3d6943153cd733fc7b6dfee368302f7ff"
     stemcell:
       os: "ubuntu-trusty"
-      version: "3586.26"
+      version: "3586.27"
 
 - path: /releases/name=docker
   type: replace
@@ -37,7 +37,7 @@
     sha1:    "7ec023e94f9cda4f928bc3bc9c326a579dc90f80"
     stemcell:
       os: "ubuntu-trusty"
-      version: "3586.26"
+      version: "3586.27"
 
 - path: /releases/name=cfcr-etcd
   type: replace
@@ -48,16 +48,16 @@
     sha1:    "a297d07f2f172f54817337c06945ddf572e4fa72"
     stemcell:
       os: "ubuntu-trusty"
-      version: "3586.26"
+      version: "3586.27"
 
 - path: /releases/name=kubo
   type: replace
   value:
     name:    "kubo"
-    url:     "https://s3.amazonaws.com/cfcr-compiled-deployment/kubo/kubo-0.19.0-ubuntu-trusty-3586.26-20180717-215354-937659403-20180717215416.tgz"
-    version: "0.19.0"
-    sha1:    "d721c853dd63064cbd0f9be38623c730e5a42f00"
+    url:     "https://s3.amazonaws.com/cfcr-compiled-deployment/kubo/kubo-0.20.0-ubuntu-trusty-3586.27-20180808-202221-904175778-20180808202243.tgz"
+    version: "0.20.0"
+    sha1:    "a825799144453bcf79a3c57ab82f53e26d6c495b"
     stemcell:
       os: "ubuntu-trusty"
-      version: "3586.26"
+      version: "3586.27"
 
