@@ -360,7 +360,7 @@ resources:
   type: git
   source:
     uri: git@github.com:starkandwayne/cfcr-compiled-deployment.git
-    branch:      master
+    branch:      develop
     private_key: (( grab meta.github.private_key ))
 
 - name: cfcr-manifests
