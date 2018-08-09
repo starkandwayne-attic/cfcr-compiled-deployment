@@ -110,7 +110,7 @@ jobs:
           params:
             REPO_ROOT: git
             REPO_OUT:  pushme
-            REPO_OUT_BRANCH: master
+            REPO_OUT_BRANCH: develop
             GIT_EMAIL: (( grab meta.git.email ))
             GIT_NAME:  (( grab meta.git.name ))
       - name: bosh-deploy-testflight
