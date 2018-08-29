@@ -3,61 +3,61 @@
   path: /stemcells
   value:
   - alias: default
-    os: ubuntu-trusty
-    version: "3586.latest"
+    os: ubuntu-xenial
+    version: "97.latest"
 
 - path: /releases/name=bosh-dns
   type: replace
   value:
     name:    "bosh-dns"
-    url:     "https://s3.amazonaws.com/cfcr-compiled-deployment/bosh-dns/bosh-dns-1.8.0-ubuntu-trusty-3586.26-20180724-233908-032325225-20180724233915.tgz"
+    url:     "https://s3.amazonaws.com/cfcr-compiled-deployment/bosh-dns/bosh-dns-1.8.0-ubuntu-xenial-97.15-20180829-224034-102325224-20180829224042.tgz"
     version: "1.8.0"
-    sha1:    "163875859466ffcc2fb88c5621400ac587c24429"
+    sha1:    "69a6d75c4530e04e994970fd4d7dc903f0d9dac5"
     stemcell:
-      os: "ubuntu-trusty"
-      version: "3586.40"
+      os: "ubuntu-xenial"
+      version: "97.15"
 
 - path: /releases/name=bpm
   type: replace
   value:
     name:    "bpm"
-    url:     "https://s3.amazonaws.com/cfcr-compiled-deployment/bpm/bpm-0.12.2-ubuntu-trusty-3586.36-20180822-215316-383374865-20180822215323.tgz"
+    url:     "https://s3.amazonaws.com/cfcr-compiled-deployment/bpm/bpm-0.12.2-ubuntu-xenial-97.15-20180829-223712-616867701-20180829223719.tgz"
     version: "0.12.2"
-    sha1:    "ced20271c3a7f2c5e61c099297f3bdb98eddb318"
+    sha1:    "c38e22be570d90dce3563ab1add7235995c507aa"
     stemcell:
-      os: "ubuntu-trusty"
-      version: "3586.40"
+      os: "ubuntu-xenial"
+      version: "97.15"
 
 - path: /releases/name=docker
   type: replace
   value:
     name:    "docker"
-    url:     "https://s3.amazonaws.com/cfcr-compiled-deployment/docker/docker-32.0.0-ubuntu-trusty-3586.16-20180605-005227-257930869-20180605005235.tgz"
+    url:     "https://s3.amazonaws.com/cfcr-compiled-deployment/docker/docker-32.0.0-ubuntu-xenial-97.15-20180829-223928-289540962-20180829223936.tgz"
     version: "32.0.0"
-    sha1:    "7ec023e94f9cda4f928bc3bc9c326a579dc90f80"
+    sha1:    "4a8448d61e286bdbad2c4ec1e43baf408df83313"
     stemcell:
-      os: "ubuntu-trusty"
-      version: "3586.40"
+      os: "ubuntu-xenial"
+      version: "97.15"
 
 - path: /releases/name=cfcr-etcd
   type: replace
   value:
     name:    "cfcr-etcd"
-    url:     "https://s3.amazonaws.com/cfcr-compiled-deployment/cfcr-etcd/cfcr-etcd-1.4.0-ubuntu-trusty-3586.26-20180723-101428-920883108-20180723101434.tgz"
+    url:     "https://s3.amazonaws.com/cfcr-compiled-deployment/cfcr-etcd/cfcr-etcd-1.4.0-ubuntu-xenial-97.15-20180829-223901-560967876-20180829223909.tgz"
     version: "1.4.0"
-    sha1:    "a297d07f2f172f54817337c06945ddf572e4fa72"
+    sha1:    "e10ff7087e117fbe69408855251b4c8a14d40f6a"
     stemcell:
-      os: "ubuntu-trusty"
-      version: "3586.40"
+      os: "ubuntu-xenial"
+      version: "97.15"
 
 - path: /releases/name=kubo
   type: replace
   value:
     name:    "kubo"
-    url:     "https://s3.amazonaws.com/cfcr-compiled-deployment/kubo/kubo-0.21.0-ubuntu-trusty-3586.40-20180829-212301-22048577-20180829212323.tgz"
+    url:     "https://s3.amazonaws.com/cfcr-compiled-deployment/kubo/kubo-0.21.0-ubuntu-xenial-97.15-20180829-223954-596717276-20180829224016.tgz"
     version: "0.21.0"
-    sha1:    "7e78a9099c572af5ad4c11dba9748dd60439dba2"
+    sha1:    "990393dd12ff18b08983c10a9b913eea54902abd"
     stemcell:
-      os: "ubuntu-trusty"
-      version: "3586.40"
+      os: "ubuntu-xenial"
+      version: "97.15"
 
