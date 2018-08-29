@@ -82,7 +82,6 @@ jobs:
         - get: etcd-compiled-release
           passed: [etcd-compile-release-97]
         - get: ubuntu-xenial-stemcell-97
-          trigger: true
           passed: [kubo-compile-release-97]
           params: {tarball: false}
       - task: update-manifest
