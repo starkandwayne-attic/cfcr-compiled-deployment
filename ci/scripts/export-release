@@ -11,7 +11,7 @@ set -eu
 # stemcell metadata/upload
 #
 
-STEMCELL_OS=${STEMCELL_OS:-ubuntu-trusty}
+STEMCELL_OS=${STEMCELL_OS:-ubuntu-xenial}
 STEMCELL_VERSION=$(cat stemcell/version)
 STEMCELL_CPI=${STEMCELL_CPI:-warden-boshlite}
 

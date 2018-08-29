@@ -32,11 +32,11 @@ groups:
   jobs:
   - testflight
   - manifest
-  - docker-compile-release-3586
-  - etcd-compile-release-3586
-  - kubo-compile-release-3586
-  - bpm-compile-release-3586
-  - bosh-dns-compile-release-3586
+  - docker-compile-release-97
+  - etcd-compile-release-97
+  - kubo-compile-release-97
+  - bpm-compile-release-97
+  - bosh-dns-compile-release-97
 jobs:
 - name: testflight
   public: true
@@ -72,18 +72,18 @@ jobs:
           trigger: true
           params: {include_source_tarball: true, globs: [x]}
         - get: kubo-compiled-release
-          passed: [kubo-compile-release-3586]
+          passed: [kubo-compile-release-97]
         - get: bosh-dns-compiled-release
-          passed: [bosh-dns-compile-release-3586]
+          passed: [bosh-dns-compile-release-97]
         - get: bpm-compiled-release
-          passed: [bpm-compile-release-3586]
+          passed: [bpm-compile-release-97]
         - get: docker-compiled-release
-          passed: [docker-compile-release-3586]
+          passed: [docker-compile-release-97]
         - get: etcd-compiled-release
-          passed: [etcd-compile-release-3586]
-        - get: ubuntu-trusty-stemcell-3586
+          passed: [etcd-compile-release-97]
+        - get: ubuntu-xenial-stemcell-97
           trigger: true
-          passed: [kubo-compile-release-3586]
+          passed: [kubo-compile-release-97]
           params: {tarball: false}
       - task: update-manifest
         config:
@@ -96,7 +96,7 @@ jobs:
           inputs:
             - name: git
             - name: cfcr-manifests
-            - name: ubuntu-trusty-stemcell-3586
+            - name: ubuntu-xenial-stemcell-97
               path: stemcell
             - name: bosh-dns-compiled-release
             - name: bpm-compiled-release
@@ -160,7 +160,7 @@ jobs:
           vars:
             deployment_name: cfcr-testflight
 
-- name: bpm-compile-release-3586
+- name: bpm-compile-release-97
   public: true
   serial: true
   plan:
@@ -169,7 +169,7 @@ jobs:
       - get: github
         resource: bpm-release
         trigger: true
-      - get: ubuntu-trusty-stemcell-3586
+      - get: ubuntu-xenial-stemcell-97
         params: {tarball: false}
     - task: export-release
       config:
@@ -181,7 +181,7 @@ jobs:
             tag:        (( grab meta.image.tag ))
         inputs:
           - name: git
-          - name: ubuntu-trusty-stemcell-3586
+          - name: ubuntu-xenial-stemcell-97
             path: stemcell
           - name: github
             path: release
@@ -199,7 +199,7 @@ jobs:
       params:
         file: "compiled-release/bpm/*.tgz"
 
-- name: bosh-dns-compile-release-3586
+- name: bosh-dns-compile-release-97
   public: true
   serial: true
   plan:
@@ -208,7 +208,7 @@ jobs:
       - get: github
         resource: bosh-dns-release
         trigger: true
-      - get: ubuntu-trusty-stemcell-3586
+      - get: ubuntu-xenial-stemcell-97
         params: {tarball: false}
     - task: export-release
       config:
@@ -220,7 +220,7 @@ jobs:
             tag:        (( grab meta.image.tag ))
         inputs:
           - name: git
-          - name: ubuntu-trusty-stemcell-3586
+          - name: ubuntu-xenial-stemcell-97
             path: stemcell
           - name: github
             path: release
@@ -238,7 +238,7 @@ jobs:
       params:
         file: "compiled-release/bosh-dns/*.tgz"
 
-- name: docker-compile-release-3586
+- name: docker-compile-release-97
   public: true
   serial: true
   plan:
@@ -247,7 +247,7 @@ jobs:
       - get: github
         resource: docker-boshrelease
         trigger: true
-      - get: ubuntu-trusty-stemcell-3586
+      - get: ubuntu-xenial-stemcell-97
         params: {tarball: false}
     - task: export-release
       config:
@@ -259,7 +259,7 @@ jobs:
             tag:        (( grab meta.image.tag ))
         inputs:
           - name: git
-          - name: ubuntu-trusty-stemcell-3586
+          - name: ubuntu-xenial-stemcell-97
             path: stemcell
           - name: github
             path: release
@@ -277,7 +277,7 @@ jobs:
       params:
         file: "compiled-release/docker/*.tgz"
 
-- name: etcd-compile-release-3586
+- name: etcd-compile-release-97
   public: true
   serial: true
   plan:
@@ -286,7 +286,7 @@ jobs:
       - get: github
         resource: cfcr-etcd-release
         trigger: true
-      - get: ubuntu-trusty-stemcell-3586
+      - get: ubuntu-xenial-stemcell-97
         params: {tarball: false}
     - task: export-release
       config:
@@ -298,7 +298,7 @@ jobs:
             tag:        (( grab meta.image.tag ))
         inputs:
           - name: git
-          - name: ubuntu-trusty-stemcell-3586
+          - name: ubuntu-xenial-stemcell-97
             path: stemcell
           - name: github
             path: release
@@ -316,7 +316,7 @@ jobs:
       params:
         file: "compiled-release/cfcr-etcd/*.tgz"
 
-- name: kubo-compile-release-3586
+- name: kubo-compile-release-97
   public: true
   serial: true
   plan:
@@ -325,7 +325,7 @@ jobs:
       - get: github
         resource: kubo-release
         trigger: true
-      - get: ubuntu-trusty-stemcell-3586
+      - get: ubuntu-xenial-stemcell-97
         params: {tarball: false}
     - task: export-release
       config:
@@ -337,7 +337,7 @@ jobs:
             tag:        (( grab meta.image.tag ))
         inputs:
           - name: git
-          - name: ubuntu-trusty-stemcell-3586
+          - name: ubuntu-xenial-stemcell-97
             path: stemcell
           - name: github
             path: release
@@ -395,11 +395,11 @@ resources:
     repository: cfcr-etcd-release
     access_token: (( grab meta.github.access_token ))
 
-- name: ubuntu-trusty-stemcell-3586
+- name: ubuntu-xenial-stemcell-97
   type: bosh-io-stemcell
   source:
-    name: bosh-warden-boshlite-ubuntu-trusty-go_agent
-    version_family: 3586.latest
+    name: bosh-warden-boshlite-ubuntu-xenial-go_agent
+    version_family: 97.latest
 
 - name: bpm-compiled-release
   type: s3

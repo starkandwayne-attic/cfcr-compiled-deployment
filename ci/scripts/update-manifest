@@ -9,7 +9,7 @@ tar xfz source.tar.gz
 popd
 raw_cfcr_manifests=$(ls -d cfcr-manifests/cloudfoundry-incubator-kubo-deployment*/manifests)
 
-STEMCELL_OS=${STEMCELL_OS:-ubuntu-trusty}
+STEMCELL_OS=${STEMCELL_OS:-ubuntu-xenial}
 STEMCELL_VERSION=$(cat stemcell/version)
 STEMCELL_MAJOR_VERSION="${STEMCELL_VERSION%.*}"
 
@@ -21,7 +21,7 @@ cat > ${REPO_OUT}/use-compiled-releases.yml <<YAML
   path: /stemcells
   value:
   - alias: default
-    os: ubuntu-trusty
+    os: ubuntu-xenial
     version: "${STEMCELL_MAJOR_VERSION}.latest"
 
 YAML
