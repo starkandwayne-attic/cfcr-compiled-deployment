@@ -50,8 +50,9 @@ jobs:
           manifest: git/cfcr.yml
           ops_files:
           - git/ci/operators/testflight.yml
+          - git/operators/rename.yml
           vars:
-            name: cfcr-testflight
+            deployment_name: cfcr-testflight
       ensure:
         put: bosh-deploy-testflight
         params:
