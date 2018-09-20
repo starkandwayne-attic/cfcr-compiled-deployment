@@ -1,0 +1,20 @@
+#!/bin/bash
+
+set -eu
+
+: ${BOSH_ENVIRONMENT:?required}
+: ${BOSH_CA_CERT:?required}
+: ${BOSH_CLIENT:?required}
+: ${BOSH_CLIENT_SECRET:?required}
+
+#
+# stemcell metadata/upload
+#
+
+STEMCELL_OS=${STEMCELL_OS:-ubuntu-xenial}
+STEMCELL_VERSION=$(cat stemcell/version)
+STEMCELL_MAJOR_VERSION="${STEMCELL_VERSION%.*}"
+STEMCELL_CPI=${STEMCELL_CPI:-warden-boshlite}
+
+set -x
+bosh -n upload-stemcell "https://bosh.io/d/stemcells/bosh-${STEMCELL_CPI}-${STEMCELL_OS}-go_agent?v=${STEMCELL_VERSION}"
