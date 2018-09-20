@@ -17,6 +17,11 @@ meta:
     secret_key: ((aws-cfcommunity-secret))
 
   bosh:
+    # target:   ((bosh_environment))
+    # cacert:   ((bosh_ca_cert))
+    # username: ((bosh_client))
+    # password: ((bosh_client_secret))
+    # stemcell_cpi: aws-xen-hvm
     target:   ((bosh-lite-environment))
     cacert:   ((bosh-lite-ca-cert))
     username: ((bosh-lite-client))

@@ -13,7 +13,7 @@ set -eu
 
 STEMCELL_OS=${STEMCELL_OS:-ubuntu-xenial}
 STEMCELL_VERSION=$(cat stemcell/version)
-STEMCELL_CPI=${STEMCELL_CPI:-warden-boshlite}
+STEMCELL_CPI=${STEMCELL_CPI:?required}
 
 bosh -n upload-stemcell "https://bosh.io/d/stemcells/bosh-${STEMCELL_CPI}-${STEMCELL_OS}-go_agent?v=${STEMCELL_VERSION}"
 

@@ -26,6 +26,7 @@ meta:
     cacert:     (( param "Please specify the BOSH Director Root CA cert" ))
     username:   admin
     password:   (( param "Please specify the BOSH Director admin password" ))
+    stemcell_cpi: warden-boshlite
 
 groups:
 - name: main
@@ -66,6 +67,7 @@ jobs:
             BOSH_CA_CERT:       (( grab meta.bosh.cacert ))
             BOSH_CLIENT:        (( grab meta.bosh.username ))
             BOSH_CLIENT_SECRET: (( grab meta.bosh.password ))
+            STEMCELL_CPI:       (( grab meta.bosh.stemcell_cpi ))
       - name: bosh-deploy-testflight
         put: bosh-deploy-testflight
         params:
@@ -216,7 +218,7 @@ jobs:
           BOSH_CA_CERT:       (( grab meta.bosh.cacert ))
           BOSH_CLIENT:        (( grab meta.bosh.username ))
           BOSH_CLIENT_SECRET: (( grab meta.bosh.password ))
-          STEMCELL_CPI:       warden-boshlite
+          STEMCELL_CPI:       (( grab meta.bosh.stemcell_cpi ))
     - put: bpm-compiled-release
       params:
         file: "compiled-release/bpm/*.tgz"
@@ -255,7 +257,7 @@ jobs:
           BOSH_CA_CERT:       (( grab meta.bosh.cacert ))
           BOSH_CLIENT:        (( grab meta.bosh.username ))
           BOSH_CLIENT_SECRET: (( grab meta.bosh.password ))
-          STEMCELL_CPI:       warden-boshlite
+          STEMCELL_CPI:       (( grab meta.bosh.stemcell_cpi ))
     - put: bosh-dns-compiled-release
       params:
         file: "compiled-release/bosh-dns/*.tgz"
@@ -294,7 +296,7 @@ jobs:
           BOSH_CA_CERT:       (( grab meta.bosh.cacert ))
           BOSH_CLIENT:        (( grab meta.bosh.username ))
           BOSH_CLIENT_SECRET: (( grab meta.bosh.password ))
-          STEMCELL_CPI:       warden-boshlite
+          STEMCELL_CPI:       (( grab meta.bosh.stemcell_cpi ))
     - put: docker-compiled-release
       params:
         file: "compiled-release/docker/*.tgz"
@@ -333,7 +335,7 @@ jobs:
           BOSH_CA_CERT:       (( grab meta.bosh.cacert ))
           BOSH_CLIENT:        (( grab meta.bosh.username ))
           BOSH_CLIENT_SECRET: (( grab meta.bosh.password ))
-          STEMCELL_CPI:       warden-boshlite
+          STEMCELL_CPI:       (( grab meta.bosh.stemcell_cpi ))
     - put: etcd-compiled-release
       params:
         file: "compiled-release/cfcr-etcd/*.tgz"
@@ -372,7 +374,7 @@ jobs:
           BOSH_CA_CERT:       (( grab meta.bosh.cacert ))
           BOSH_CLIENT:        (( grab meta.bosh.username ))
           BOSH_CLIENT_SECRET: (( grab meta.bosh.password ))
-          STEMCELL_CPI:       warden-boshlite
+          STEMCELL_CPI:       (( grab meta.bosh.stemcell_cpi ))
     - put: kubo-compiled-release
       params:
         file: "compiled-release/kubo/*.tgz"
